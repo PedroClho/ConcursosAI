@@ -1,0 +1,24 @@
+# RAG Pipeline para Concursos Brasileiros
+# Dependências principais
+
+openai>=1.58.0
+chromadb>=0.5.23
+pypdf>=5.1.0
+python-dotenv>=1.0.1
+tiktoken>=0.8.0
+
+# LangChain e LangGraph para o Agente
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langgraph>=0.2.0
+langchain-core>=0.3.0
+
+# Backend API (FastAPI)
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+
+# Banco de Questões
+datasets>=4.5.0  # Para Hugging Face (atualizado)
+pyarrow>=23.0.0  # Dependência do datasets (compatibilidade)
+sqlalchemy>=2.0.0  # ORM para banco de dados
