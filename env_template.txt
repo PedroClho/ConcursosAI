@@ -1,0 +1,10 @@
+# Configuracao do ambiente para o RAG Pipeline OAB
+# Copie este arquivo para .env e preencha com suas credenciais
+
+# Chave da API OpenAI (obrigatorio)
+OPENAI_API_KEY=sua-chave-api-aqui
+
+# Exemplo de como obter a chave:
+# 1. Acesse: https://platform.openai.com/api-keys
+# 2. Crie uma nova chave
+# 3. Cole aqui

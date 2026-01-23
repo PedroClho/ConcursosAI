@@ -1,0 +1,274 @@
+{
+  "schema_version": "1.0",
+  "concurso": {
+    "nome": "OAB (Exame de Ordem)",
+    "banca": "FGV",
+    "fase": 1
+  },
+  "defaults": {
+    "language": "pt-BR",
+    "format": "pdf"
+  },
+  "documents": [
+    {
+      "id": "oab_fase1_edital_01",
+      "path": "data/editais/edital1.pdf",
+      "kind": "edital",
+      "title": "Edital (OAB 1ª fase)",
+      "tags": [
+        "oab",
+        "fase1",
+        "edital",
+        "fgv"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 7,
+        "extracted_title": "CONSELHO FEDERAL DA ORDEM DOS ADVOGADOS DO BRASIL 45º EXAME DE ORDEM UNIFICADO O Conselho Federal da Ordem dos Advogados do Brasil (OAB) torna público o horário e os locais de realização da prova obje",
+        "char_count": 25098,
+        "avg_chars_per_page": 3585.4,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.26,
+        "extracted_at": "2026-01-14T23:14:08.859539",
+        "extracted_date": "21 de dezembro de 2025"
+      },
+      "preview": "CONSELHO FEDERAL DA ORDEM DOS ADVOGADOS DO BRASIL 45º EXAME DE ORDEM UNIFICADO O Conselho Federal da Ordem dos Advogados do Brasil (OAB) torna público o horário e os locais de realização da prova objetiva do 45º Exame de Ordem Unificado. 1. A prova objetiva terá a duração de 5 (cinco) horas e será aplicada no dia 21 de dezembro de 2025 , com início às 13 horas (horário oficial de Brasília/DF), nos seguintes locais e endereços: Uf Cidade Escola Endereço AC Rio Branco ESTACIO UNIMETA ESTR. ALBERTO",
+      "extraction_status": "success"
+    },
+    {
+      "id": "oab_fase1_edital_locais",
+      "path": "data/editais/edital_locais.pdf",
+      "kind": "edital",
+      "title": "Edital/Comunicado de Locais (OAB 1ª fase)",
+      "tags": [
+        "oab",
+        "fase1",
+        "edital",
+        "locais",
+        "fgv"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 7,
+        "extracted_title": "CONSELHO FEDERAL DA ORDEM DOS ADVOGADOS DO BRASIL 45º EXAME DE ORDEM UNIFICADO O Conselho Federal da Ordem dos Advogados do Brasil (OAB) torna público o horário e os locais de realização da prova obje",
+        "char_count": 25098,
+        "avg_chars_per_page": 3585.4,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.26,
+        "extracted_at": "2026-01-14T23:14:09.657412",
+        "extracted_date": "21 de dezembro de 2025"
+      },
+      "preview": "CONSELHO FEDERAL DA ORDEM DOS ADVOGADOS DO BRASIL 45º EXAME DE ORDEM UNIFICADO O Conselho Federal da Ordem dos Advogados do Brasil (OAB) torna público o horário e os locais de realização da prova objetiva do 45º Exame de Ordem Unificado. 1. A prova objetiva terá a duração de 5 (cinco) horas e será aplicada no dia 21 de dezembro de 2025 , com início às 13 horas (horário oficial de Brasília/DF), nos seguintes locais e endereços: Uf Cidade Escola Endereço AC Rio Branco ESTACIO UNIMETA ESTR. ALBERTO",
+      "extraction_status": "success"
+    },
+    {
+      "id": "oab_fase1_comunicado_01",
+      "path": "data/editais/comunicado1.pdf",
+      "kind": "comunicado",
+      "title": "Comunicado 01 (OAB 1ª fase)",
+      "tags": [
+        "oab",
+        "fase1",
+        "comunicado",
+        "fgv"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 1,
+        "extracted_title": "COMUNICADO O Conselho Federal da OAB , por intermédio da Coordenação Nacional do Exame de Ordem Unificado (CONEOR) e da Comissão Nacional de Exame de Ordem (CNEOR) , comunica aos examinandos inscritos",
+        "char_count": 1543,
+        "avg_chars_per_page": 1543.0,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.1,
+        "extracted_at": "2026-01-14T23:14:09.708695",
+        "extracted_date": "16 de dezembro de 2025"
+      },
+      "preview": "COMUNICADO O Conselho Federal da OAB , por intermédio da Coordenação Nacional do Exame de Ordem Unificado (CONEOR) e da Comissão Nacional de Exame de Ordem (CNEOR) , comunica aos examinandos inscritos para re alizar a prova objetiva – 1ª fase – do 45º Exame d e Ordem Unificado , no dia 21/12/2025, no município de Ponta Grossa/P araná , que em razão de indisponibilidade superveniente do local anteriormente definido , fez-se necessária a ALTERAÇÃO DO LOCAL DE PROVA para COLÉGIO SAGRADA FAMÍLIA – A",
+      "extraction_status": "success"
+    },
+    {
+      "id": "oab_fase1_comunicado_02",
+      "path": "data/editais/comunicado2.pdf",
+      "kind": "comunicado",
+      "title": "Comunicado 02 (OAB 1ª fase)",
+      "tags": [
+        "oab",
+        "fase1",
+        "comunicado",
+        "fgv"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 1,
+        "extracted_title": "A Coordenação Nacional do Exame de Ordem Unificado e a Fundação Getulio Vargas comunicam aos examinandos e aos demais interessados os nomes dos Coordenadores da Banca Examinadora do 4 5º Exame de Orde",
+        "char_count": 2997,
+        "avg_chars_per_page": 2997.0,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.1,
+        "extracted_at": "2026-01-14T23:14:09.784263",
+        "extracted_date": "13 de junho de 2011",
+        "num_articles_detected": 1
+      },
+      "preview": "A Coordenação Nacional do Exame de Ordem Unificado e a Fundação Getulio Vargas comunicam aos examinandos e aos demais interessados os nomes dos Coordenadores da Banca Examinadora do 4 5º Exame de Ordem Unificado e dos professores indicados pela OAB para avaliar o banco de questões da Fundação Getulio Vargas, conforme dispõe o art. 10 do Provimento 144, de 13 de junho de 2011, e suas alterações posteriores constantes do Provimento 156, de 1º de novembro de 2013, do Conselho Federal da OAB. Coorde",
+      "extraction_status": "success"
+    },
+    {
+      "id": "oab_norma_provimento_cfoab",
+      "path": "data/editais/Provimento_CFOAB.pdf",
+      "kind": "normativo",
+      "title": "Provimento CFOAB (regras gerais do Exame de Ordem)",
+      "tags": [
+        "oab",
+        "normativo",
+        "cfoab",
+        "fase1"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 4,
+        "extracted_title": "Provimento Nº 144/201 1 segunda-feira, 13 de junho de 2011 às 12:00 O CONSELHO FEDERAL DA ORDEM DOS ADVOGADOS DO BRASIL, no uso das atribuições que lhe são conferidas pelos arts. 8º, § 1º, e 54, V, da",
+        "char_count": 10365,
+        "avg_chars_per_page": 2591.2,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.16,
+        "extracted_at": "2026-01-14T23:14:09.904685",
+        "extracted_date": "13 de junho de 2011",
+        "num_articles_detected": 17
+      },
+      "preview": "Provimento Nº 144/201 1 segunda-feira, 13 de junho de 2011 às 12:00 O CONSELHO FEDERAL DA ORDEM DOS ADVOGADOS DO BRASIL, no uso das atribuições que lhe são conferidas pelos arts. 8º, § 1º, e 54, V, da Lei n. 8.906, de 4 de julho de 1994 - Estatuto da Advocacia e da OAB, tendo em vista o decidido nos autos da Proposição n. 201 1.19.02371-02, RESOL VE: CAPÍTULO I DO EXAME DE ORDEM Art. 1º O Exame de Ordem é preparado e realizado pelo Conselho Federal da Ordem dos Advogados do Brasil - CFOAB, media",
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_cf_1988",
+      "path": "data/conteudos/cf.pdf",
+      "kind": "lei",
+      "title": "Constituição Federal (CF/88)",
+      "tags": [
+        "oab",
+        "fase1",
+        "legislacao",
+        "direito_constitucional",
+        "cf"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "sigla": "CF"
+      },
+      "extracted_metadata": {
+        "num_pages": 286,
+        "extracted_title": "CONSTITUIÇÃO da República Federativa do BrasilSUPREMO TRIBUNAL FEDERAL Brasília 2024SUPREMO TRIBUNAL FEDERAL Constituição da República Federativa do Brasil Atualizada até a EC n. 132/2023 Acesse a ver",
+        "char_count": 647225,
+        "avg_chars_per_page": 2263.0,
+        "extraction_quality": "boa",
+        "file_size_mb": 2.31,
+        "extracted_at": "2026-01-14T23:14:16.420251",
+        "extracted_date": "5 de outubro de 1988",
+        "num_articles_detected": 376
+      },
+      "preview": "CONSTITUIÇÃO da República Federativa do BrasilSUPREMO TRIBUNAL FEDERAL Brasília 2024SUPREMO TRIBUNAL FEDERAL Constituição da República Federativa do Brasil Atualizada até a EC n. 132/2023 Acesse a versão digital Brasil. [Constituição (1988)]. Constituição da Rep ública Federativa do Brasil. [recurso eletrônico] — Brasília : Supremo Tribunal Federal, Secretaria de Altos Estudos, Pesquisas e Gestão da Informação, 2024. eB ook (284 p.) A tualizada até a EC n. 132/2023. T exto constitucional origina",
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_cpp",
+      "path": "data/conteudos/codigo_de_processo_penal_1ed.pdf",
+      "kind": "lei",
+      "title": "Código de Processo Penal (CPP)",
+      "tags": [
+        "oab",
+        "fase1",
+        "legislacao",
+        "direito_processual_penal",
+        "cpp"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "sigla": "CPP",
+        "edicao_hint": "1"
+      },
+      "extracted_metadata": {
+        "num_pages": 191,
+        "extracted_title": "Código de Processo Penal Edição atualizada até abril de 2017 Código de Processo Penal",
+        "char_count": 315406,
+        "avg_chars_per_page": 1651.3,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.92,
+        "extracted_at": "2026-01-14T23:14:21.294992",
+        "num_articles_detected": 911
+      },
+      "preview": "Código de Processo Penal Edição atualizada até abril de 2017 Código de Processo Penal",
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_ctn",
+      "path": "data/conteudos/codigo_tributario_nacional_3ed.pdf",
+      "kind": "lei",
+      "title": "Código Tributário Nacional (CTN)",
+      "tags": [
+        "oab",
+        "fase1",
+        "legislacao",
+        "direito_tributario",
+        "ctn"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "sigla": "CTN",
+        "edicao_hint": "3"
+      },
+      "extracted_metadata": {
+        "num_pages": 73,
+        "extracted_title": "Código Tributário Nacional 3a edição Atualizada até agosto de 2017 Código Tributário Nacional",
+        "char_count": 107911,
+        "avg_chars_per_page": 1478.2,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.47,
+        "extracted_at": "2026-01-14T23:14:22.398403",
+        "num_articles_detected": 216
+      },
+      "preview": "Código Tributário Nacional 3a edição Atualizada até agosto de 2017 Código Tributário Nacional",
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_cpc_2015",
+      "path": "data/conteudos/CPC_9ed_2016.pdf",
+      "kind": "lei",
+      "title": "Código de Processo Civil (CPC/2015)",
+      "tags": [
+        "oab",
+        "fase1",
+        "legislacao",
+        "direito_processual_civil",
+        "cpc"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "sigla": "CPC",
+        "edicao_hint": "9",
+        "ano_hint": "2016"
+      },
+      "extracted_metadata": {
+        "num_pages": 322,
+        "extracted_title": "Atualizada até março de 20169a Ediçãoe normas correlatasCódigo de Processo Civil Código de Processo Civil E NORMAS CORRELATAS",
+        "char_count": 1011049,
+        "avg_chars_per_page": 3139.9,
+        "extraction_quality": "boa",
+        "file_size_mb": 5.08,
+        "extracted_at": "2026-01-14T23:14:34.082314",
+        "num_articles_detected": 1620
+      },
+      "preview": "Atualizada até março de 20169a Ediçãoe normas correlatasCódigo de Processo Civil Código de Processo Civil E NORMAS CORRELATAS",
+      "extraction_status": "success"
+    }
+  ],
+  "last_enrichment": "2026-01-14T23:14:34.082357"
+}
