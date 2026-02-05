@@ -90,7 +90,7 @@ export default function ChatInterface() {
             <div className="bg-primary-600 p-4 rounded-full mb-4">
               <GraduationCapIcon className="w-12 h-12 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-dark-900 mb-2">
+            <h2 className="text-2xl text-dark-900 mb-2" style={{ fontWeight: 400, letterSpacing: '-0.02em' }}>
               Olá! Sou seu Tutor OAB
             </h2>
             <p className="text-dark-600 mb-6 max-w-md">

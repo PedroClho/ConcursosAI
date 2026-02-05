@@ -37,7 +37,7 @@ export default function Sidebar() {
             <Scale className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white">Castro</h1>
+            <h1 className="text-lg text-white" style={{ fontWeight: 400, letterSpacing: '-0.02em' }}>Castro</h1>
             <p className="text-xs text-gray-400">Tutor OAB</p>
           </div>
         </div>

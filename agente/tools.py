@@ -241,28 +241,35 @@ class SearchTools:
             
             alternativas = json.loads(alternativas_json)
             
-            # Montar resposta
-            response = f"📚 EXPLICAÇÃO DA QUESTÃO\n"
-            response += f"{'='*60}\n"
-            response += f"ID: {qid} | Ano: {ano} | Exame: {exam_id} | Nº: {num_q}\n"
-            response += f"Matéria: {materia}\n"
-            response += f"{'='*60}\n\n"
+            # Montar resposta com Markdown rico
+            response = f"# 📚 Explicação da Questão\n\n"
+            response += f"**Questão:** {qid} | **Ano:** {ano} | **Exame:** {exam_id} | **Nº:** {num_q}  \n"
+            response += f"**Matéria:** {materia}\n\n"
+            response += "---\n\n"
             
-            response += f"ENUNCIADO:\n{enunciado}\n\n"
+            response += f"## 📋 Enunciado\n\n"
+            response += f"{enunciado}\n\n"
             
-            response += "ALTERNATIVAS:\n"
+            response += f"## 📝 Alternativas\n\n"
             for alt in alternativas:
-                marcador = "✅" if alt['letra'] == gabarito else "  "
-                response += f"{marcador} {alt['letra']}) {alt['texto']}\n"
+                if alt['letra'] == gabarito:
+                    # Alternativa correta em destaque
+                    response += f"- **✅ {alt['letra']})** **{alt['texto']}** ← *Resposta Correta*\n"
+                else:
+                    # Alternativas incorretas
+                    response += f"- ❌ **{alt['letra']})** {alt['texto']}\n"
             
-            response += f"\n🎯 GABARITO: {gabarito}\n\n"
+            response += f"\n---\n\n"
+            response += f"## 🎯 Gabarito Oficial\n\n"
+            response += f"> **Alternativa correta: {gabarito}**\n\n"
             
             if justificativa:
-                response += f"JUSTIFICATIVA:\n{justificativa}\n\n"
+                response += f"### 💡 Justificativa\n\n"
+                response += f"{justificativa}\n\n"
             
             # Buscar artigos relacionados no RAG
-            response += "📖 ARTIGOS RELACIONADOS:\n"
-            response += "(Buscando na base de leis...)\n\n"
+            response += "---\n\n"
+            response += "## 📖 Base Legal e Artigos Relacionados\n\n"
             
             # Buscar artigos relacionados ao tema
             search_query = f"{materia}: {enunciado[:200]}"
@@ -271,13 +278,23 @@ class SearchTools:
             if rag_results:
                 for i, result in enumerate(rag_results, 1):
                     lei = result['metadata'].get('sigla', 'Lei')
+                    lei_nome = result['metadata'].get('law_name', '')
                     artigo = result['metadata'].get('article_number', '?')
-                    texto = result['document'][:300]
+                    texto = result['document'][:400]
+                    relevancia = result['relevance_score']
                     
-                    response += f"{i}. {lei} - Art. {artigo}\n"
-                    response += f"   {texto}...\n\n"
+                    response += f"### 📜 {lei} - Artigo {artigo}\n"
+                    if lei_nome:
+                        response += f"*{lei_nome}*\n\n"
+                    response += f"> {texto}...\n\n"
+                    response += f"*Relevância: {relevancia:.0%}*\n\n"
             else:
-                response += "   (Nenhum artigo específico encontrado)\n\n"
+                response += "> *Nenhum artigo específico foi encontrado na base de dados para esta questão.*\n\n"
+            
+            response += "---\n\n"
+            response += "### 💭 Dica de Estudo\n\n"
+            response += "Revise os artigos mencionados acima e tente entender o raciocínio por trás da resposta correta. "
+            response += "Pratique questões similares para fixar o conteúdo!\n"
             
             return response
         

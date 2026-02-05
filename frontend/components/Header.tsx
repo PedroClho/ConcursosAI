@@ -17,7 +17,7 @@ export default function Header({ onReset, title, subtitle }: HeaderProps) {
       <div className="flex items-center justify-between">
         {/* Título da página */}
         <div>
-          {title && <h1 className="text-2xl font-bold text-white">{title}</h1>}
+          {title && <h1 className="text-2xl text-white" style={{ fontWeight: 400, letterSpacing: '-0.02em' }}>{title}</h1>}
           {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
         </div>
         

@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Filter, RotateCcw, CheckCircle, XCircle, Bot, Loader2 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import { Filter, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 import Header from '@/components/Header';
+import QuestionCard from '@/components/QuestionCard';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -181,7 +181,7 @@ Por favor, explique por que a alternativa ${questao.gabarito} é a correta, cita
           <div className="bg-gray-900 rounded-lg p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <Filter className="w-5 h-5 text-green-500" />
-              <h2 className="text-xl font-semibold">Configurar Simulado</h2>
+              <h2 className="text-xl" style={{ fontWeight: 400, letterSpacing: '-0.02em' }}>Configurar Simulado</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -278,125 +278,19 @@ Por favor, explique por que a alternativa ${questao.gabarito} é a correta, cita
 
             {/* Lista de questões */}
             <div className="space-y-6">
-              {questoes.map((questao, index) => {
-                const respostaUsuario = respostas[questao.id];
-                const acertou = mostrarGabarito && respostaUsuario === questao.gabarito;
-                const errou = mostrarGabarito && respostaUsuario && respostaUsuario !== questao.gabarito;
-
-                return (
-                  <div key={questao.id} className="bg-gray-900 rounded-lg p-6">
-                    {/* Cabeçalho da questão */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <span className="text-green-500 font-semibold">Questão {index + 1}</span>
-                        <span className="text-gray-600 text-sm ml-2">
-                          {questao.exame} • Q{questao.numero_questao}
-                        </span>
-                      </div>
-                      {mostrarGabarito && (
-                        <div>
-                          {acertou && (
-                            <div className="flex items-center gap-2 text-green-500">
-                              <CheckCircle className="w-5 h-5" />
-                              <span className="font-semibold">Correto!</span>
-                            </div>
-                          )}
-                          {errou && (
-                            <div className="flex items-center gap-2 text-red-500">
-                              <XCircle className="w-5 h-5" />
-                              <span className="font-semibold">Incorreto</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Enunciado */}
-                    <p className="text-gray-300 mb-6 leading-relaxed">{questao.enunciado}</p>
-
-                    {/* Alternativas */}
-                    <div className="space-y-3">
-                      {questao.alternativas.map((alt) => {
-                        const selecionada = respostaUsuario === alt.letra;
-                        const correta = mostrarGabarito && alt.letra === questao.gabarito;
-                        const incorreta = mostrarGabarito && selecionada && alt.letra !== questao.gabarito;
-
-                        let className = 'border-2 rounded-lg p-4 cursor-pointer transition ';
-                        
-                        if (correta) {
-                          className += 'border-green-500 bg-green-500/10';
-                        } else if (incorreta) {
-                          className += 'border-red-500 bg-red-500/10';
-                        } else if (selecionada) {
-                          className += 'border-green-500 bg-green-500/5';
-                        } else {
-                          className += 'border-gray-700 hover:border-gray-600';
-                        }
-
-                        return (
-                          <div
-                            key={alt.letra}
-                            onClick={() => selecionarResposta(questao.id, alt.letra)}
-                            className={className}
-                          >
-                            <div className="flex gap-3">
-                              <span className="font-bold text-gray-400">{alt.letra})</span>
-                              <span className="flex-1">{alt.texto}</span>
-                              {correta && <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />}
-                              {incorreta && <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Gabarito */}
-                    {mostrarGabarito && (
-                      <div className="mt-4 space-y-3">
-                        <div className="p-4 bg-gray-800 rounded-lg border border-gray-700">
-                          <p className="text-sm text-gray-400">
-                            <span className="font-semibold text-white">Gabarito:</span> {questao.gabarito}
-                          </p>
-                        </div>
-
-                        {/* Botão Explicar com Agente */}
-                        {!explicacoes[questao.id] && (
-                          <button
-                            onClick={() => explicarComAgente(questao)}
-                            disabled={loadingExplicacao[questao.id]}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-700 disabled:cursor-not-allowed rounded-lg transition font-semibold"
-                          >
-                            {loadingExplicacao[questao.id] ? (
-                              <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Analisando...</span>
-                              </>
-                            ) : (
-                              <>
-                                <Bot className="w-5 h-5" />
-                                <span>Explicar com Agente</span>
-                              </>
-                            )}
-                          </button>
-                        )}
-
-                        {/* Explicação do Agente */}
-                        {explicacoes[questao.id] && (
-                          <div className="p-4 bg-green-900/20 border border-green-800 rounded-lg">
-                            <div className="flex items-center gap-2 mb-3">
-                              <Bot className="w-5 h-5 text-green-500" />
-                              <span className="font-semibold text-green-400">Explicação do Agente</span>
-                            </div>
-                            <div className="prose prose-invert prose-sm max-w-none">
-                              <ReactMarkdown>{explicacoes[questao.id]}</ReactMarkdown>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              {questoes.map((questao, index) => (
+                <QuestionCard
+                  key={questao.id}
+                  questao={questao}
+                  index={index}
+                  respostaUsuario={respostas[questao.id]}
+                  mostrarGabarito={mostrarGabarito}
+                  onSelecionarResposta={(letra) => selecionarResposta(questao.id, letra)}
+                  explicacao={explicacoes[questao.id]}
+                  loadingExplicacao={loadingExplicacao[questao.id]}
+                  onExplicar={() => explicarComAgente(questao)}
+                />
+              ))}
             </div>
 
             {/* Botão de finalizar/ver gabarito */}

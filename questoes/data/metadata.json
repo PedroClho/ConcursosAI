@@ -1,7 +1,7 @@
 {
   "dataset_name": "eduagarcia/oab_exams",
   "dataset_url": "https://huggingface.co/datasets/eduagarcia/oab_exams",
-  "download_date": "2026-01-20T11:06:17.978761",
+  "download_date": "2026-01-23T18:17:43.651549",
   "total_questoes": 2210,
   "periodo": "2010-2018",
   "estatisticas": {
