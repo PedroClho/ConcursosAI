@@ -56,7 +56,13 @@ frontend/
 │   ├── Sidebar.tsx         # Navegação lateral (3 abas)
 │   ├── Header.tsx          # Cabeçalho de página
 │   ├── ChatInterface.tsx   # Interface de chat
-│   └── MessageBubble.tsx   # Bolha de mensagem
+│   ├── MessageBubble.tsx   # Bolha de mensagem
+│   ├── QuestionCard.tsx    # ✨ Card de questão completo
+│   ├── RadioGroup.tsx      # ✨ Grupo de opções de rádio
+│   ├── StatsCard.tsx       # ✨ Card de estatísticas
+│   ├── ProgressBar.tsx     # ✨ Barra de progresso
+│   ├── QuestionsTable.tsx  # ✨ Tabela de questões
+│   └── README.md           # ✨ Documentação de componentes
 │
 ├── lib/                    # Utilitários
 │   └── api.ts              # Cliente da API
@@ -84,36 +90,53 @@ frontend/
 
 ---
 
-### **2. Simulado (`/simulado`)**
+### **2. Simulado (`/simulado`)** ✨ ATUALIZADO
 
 - Prática com questões reais da OAB
 - Filtros por matéria, ano, quantidade
-- Interface interativa
+- **Interface melhorada com QuestionCard**
 - Gabarito ao final
 
 **Funcionalidades:**
 - Selecionar matéria (dropdown)
 - Filtrar por ano (2010-2018)
 - Escolher quantidade (5-30 questões)
-- Marcar respostas
+- Marcar respostas com RadioGroup estilizado
 - Ver gabarito com acertos/erros
 - Percentual de aproveitamento
 - Explicação do gabarito pelo agente
+- **Cards visuais modernos para cada questão**
+- **Feedback visual aprimorado**
 
 ---
 
-### **3. Dashboard (`/dashboard`)**
+### **3. Dashboard (`/dashboard`)** ✨ IMPLEMENTADO
 
-- Página de estatísticas (em desenvolvimento)
-- Preview de funcionalidades futuras
+- Página de estatísticas **funcional**
+- Dados mockados para demonstração
 
-**Funcionalidades planejadas:**
-- Taxa de acerto por matéria
-- Histórico de simulados
-- Pontos fracos identificados
-- Gráficos de desempenho
-- Recomendações personalizadas
-- Conquistas e marcos
+**Funcionalidades implementadas:**
+- ✅ Cards de estatísticas principais (4)
+- ✅ Progresso por matéria com ProgressBars
+- ✅ Cards secundários de métricas
+- ✅ Tabela de questões recentes
+- ✅ Recomendações personalizadas
+- ✅ Indicadores de tendência
+- ✅ Visual moderno e profissional
+
+---
+
+### **4. Componentes (`/componentes`)** ✨ NOVO
+
+- Showcase de todos os componentes
+- Página de demonstração e testes
+
+**Exibe:**
+- ✅ StatsCard (todos os tamanhos e cores)
+- ✅ ProgressBar (animações e variações)
+- ✅ RadioGroup (estados diferentes)
+- ✅ QuestionCard (completo com exemplos)
+- ✅ QuestionsTable (com dados de exemplo)
 
 ---
 
@@ -159,6 +182,41 @@ Accent (Green):
 **MessageBubble:**
 - Suporte a markdown
 - Estilo diferenciado por role (user/assistant)
+
+**QuestionCard:** ✨ NOVO
+- Card completo de questão
+- Badges de matéria/ano/exame
+- RadioGroup integrado
+- Feedback visual (correto/incorreto)
+- Explicação do agente com markdown
+- Estados de loading
+
+**RadioGroup:** ✨ NOVO
+- Opções de rádio estilizadas
+- Feedback visual automático
+- Estados hover e active
+- Acessibilidade nativa
+
+**StatsCard:** ✨ NOVO
+- 7 cores disponíveis
+- 3 tamanhos (sm/md/lg)
+- Ícones personalizáveis
+- Indicador de tendência (↑↓)
+- Subtítulos opcionais
+
+**ProgressBar:** ✨ NOVO
+- Barra de progresso animada
+- Animação shimmer opcional
+- 6 cores, 3 tamanhos
+- Label e porcentagem
+- Cálculo automático
+
+**QuestionsTable:** ✨ NOVO
+- Tabela responsiva
+- Status visual (correto/incorreto/não respondida)
+- Formatação de tempo
+- Resumo no footer
+- Ação de visualização
 
 ---
 
@@ -325,4 +383,34 @@ Abrir DevTools (F12) → Network tab
 
 ---
 
-*Última atualização: 2026-01-20*
+---
+
+## 🎨 Novos Componentes (v2.0)
+
+### **📦 Biblioteca de Componentes**
+
+Consulte `components/README.md` para documentação completa de cada componente.
+
+**Implementados em 2026-01-23:**
+1. ✅ QuestionCard - Card completo de questão
+2. ✅ RadioGroup - Opções de rádio estilizadas
+3. ✅ StatsCard - Cards de estatísticas
+4. ✅ ProgressBar - Barras de progresso
+5. ✅ QuestionsTable - Tabela de histórico
+
+**Features:**
+- Design system unificado
+- 7 paletas de cores
+- Múltiplos tamanhos
+- Animações fluidas
+- Totalmente tipados (TypeScript)
+- Documentação completa
+
+**Teste os componentes:**
+```
+http://localhost:3000/componentes
+```
+
+---
+
+*Última atualização: 2026-01-23 - v2.0*

@@ -10,6 +10,12 @@
   body {
     @apply bg-dark-50 text-dark-900;
   }
+
+  /* Estilização global de títulos */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {
@@ -27,5 +33,120 @@
   
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     @apply bg-dark-400;
+  }
+}
+
+/* Estilos customizados para explicações do agente */
+@layer components {
+  .explicacao-agente {
+    @apply text-gray-200;
+  }
+
+  /* Estilos para alternativas no markdown */
+  .explicacao-agente ul li {
+    @apply mb-2 p-2 rounded-lg transition-all;
+  }
+
+  /* Alternativa correta (contém ✅) */
+  .explicacao-agente ul li:has(strong:first-child) {
+    @apply ml-0;
+  }
+
+  /* Simular estilo de alternativa correta */
+  .alternativa-correta {
+    @apply bg-green-900/30 border-2 border-green-500 p-4 rounded-lg font-semibold text-green-300 shadow-lg shadow-green-900/50;
+  }
+
+  /* Simular estilo de alternativa incorreta */
+  .alternativa-incorreta {
+    @apply bg-red-900/20 border border-red-700/30 p-3 rounded-lg text-red-300/80;
+  }
+
+  /* Destaque para gabarito */
+  .explicacao-agente blockquote {
+    @apply bg-yellow-900/20 border-l-4 border-yellow-500 pl-4 py-3 my-4 rounded-r-lg;
+  }
+
+  .explicacao-agente blockquote strong {
+    @apply text-yellow-300 text-lg;
+  }
+
+  /* Headers */
+  .explicacao-agente h1 {
+    @apply text-2xl text-green-400 mb-4 mt-2;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .explicacao-agente h2 {
+    @apply text-xl text-blue-400 mt-6 mb-3 flex items-center gap-2;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .explicacao-agente h3 {
+    @apply text-lg text-purple-400 mt-4 mb-2;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  /* Parágrafos */
+  .explicacao-agente p {
+    @apply text-gray-300 leading-relaxed mb-3;
+  }
+
+  /* Links */
+  .explicacao-agente a {
+    @apply text-blue-400 hover:text-blue-300 underline;
+  }
+
+  /* Code blocks */
+  .explicacao-agente code {
+    @apply bg-gray-800 text-green-400 px-2 py-1 rounded text-sm;
+  }
+
+  .explicacao-agente pre {
+    @apply bg-gray-800 p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  /* Divisores */
+  .explicacao-agente hr {
+    @apply border-gray-700 my-6;
+  }
+
+  /* Ênfase */
+  .explicacao-agente strong {
+    @apply text-white font-bold;
+  }
+
+  .explicacao-agente em {
+    @apply text-gray-400 italic;
+  }
+
+  /* Animações para ProgressBar */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.95;
+    }
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
