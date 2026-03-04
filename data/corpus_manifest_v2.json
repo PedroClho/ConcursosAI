@@ -1,0 +1,558 @@
+{
+  "schema_version": "2.0",
+  "concurso": {
+    "nome": "OAB (Exame de Ordem)",
+    "banca": "FGV",
+    "fase": 1
+  },
+  "defaults": {
+    "language": "pt-BR",
+    "format": "pdf"
+  },
+  "eixos": {
+    "etico": {
+      "nome": "Eixo Ético",
+      "prioridade": 1,
+      "peso_exame": "critico",
+      "descricao": "Estatuto da Advocacia, Código de Ética e regulamentos da OAB"
+    },
+    "fundamental": {
+      "nome": "Eixo Fundamental",
+      "prioridade": 2,
+      "peso_exame": "alto",
+      "descricao": "Constituição Federal e Códigos principais (Civil, Penal, Processual, Trabalho, Tributário, Consumidor)"
+    },
+    "administrativo": {
+      "nome": "Eixo Administrativo e Público",
+      "prioridade": 3,
+      "peso_exame": "medio",
+      "descricao": "Leis de licitações, improbidade, processo administrativo e ações constitucionais"
+    },
+    "estatutos_especiais": {
+      "nome": "Leis Especiais e Estatutos",
+      "prioridade": 4,
+      "peso_exame": "medio",
+      "descricao": "ECA, Estatuto do Idoso, PCD, Maria da Penha, Lei de Drogas, Execução Penal, Direito Empresarial"
+    },
+    "jurisprudencia": {
+      "nome": "Jurisprudência",
+      "prioridade": 5,
+      "peso_exame": "baixo",
+      "descricao": "Súmulas Vinculantes, Súmulas e Orientações Jurisprudenciais"
+    },
+    "editais": {
+      "nome": "Documentos de Apoio",
+      "prioridade": 6,
+      "peso_exame": "informativo",
+      "descricao": "Editais, comunicados e provimentos do Exame de Ordem"
+    }
+  },
+  "documents": [
+    {
+      "id": "lei_eaoab_8906",
+      "eixo": "etico",
+      "kind": "lei",
+      "title": "Lei 8.906/94 - Estatuto da Advocacia e OAB (EAOAB)",
+      "path": "data/eixo_etico/EAOAB-2024.pdf",
+      "sigla": "EAOAB",
+      "peso_oab": "critico",
+      "tags": [
+        "oab",
+        "fase1",
+        "etico",
+        "estatuto",
+        "advocacia",
+        "eaoab"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1994",
+        "numero_lei": "8906"
+      },
+      "extracted_metadata": {
+        "num_pages": 489,
+        "extracted_title": "",
+        "char_count": 15165,
+        "avg_chars_per_page": 1516.5,
+        "extraction_quality": "boa",
+        "file_size_mb": 2.78,
+        "num_articles_detected": 1,
+        "extracted_at": "2026-03-02T13:30:11.104870"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "codigo_etica_oab",
+      "eixo": "etico",
+      "kind": "codigo",
+      "title": "Código de Ética e Disciplina da OAB (CED)",
+      "path": "data/eixo_etico/Codigo_etica_disciplina_oab.pdf",
+      "sigla": "CED",
+      "peso_oab": "critico",
+      "tags": [
+        "oab",
+        "fase1",
+        "etico",
+        "etica",
+        "disciplina",
+        "ced"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 24,
+        "extracted_title": "",
+        "char_count": 20215,
+        "avg_chars_per_page": 2021.5,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.23,
+        "num_articles_detected": 36,
+        "extracted_at": "2026-03-02T13:30:11.351901"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "regulamento_geral_eaoab",
+      "eixo": "etico",
+      "kind": "regulamento",
+      "title": "Regulamento Geral do EAOAB",
+      "path": "data/eixo_etico/Regulamento_Geral.pdf",
+      "sigla": "RG-EAOAB",
+      "peso_oab": "alto",
+      "tags": [
+        "oab",
+        "fase1",
+        "etico",
+        "regulamento",
+        "eaoab"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local"
+      },
+      "extracted_metadata": {
+        "num_pages": 57,
+        "extracted_title": "",
+        "char_count": 24452,
+        "avg_chars_per_page": 2445.2,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.4,
+        "num_articles_detected": 44,
+        "extracted_at": "2026-03-02T13:30:11.671537"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_cc",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Código Civil (CC)",
+      "path": "data/eixo_fundamental/Código Civil 2 ed.pdf",
+      "sigla": "CC",
+      "peso_oab": "alto",
+      "tags": [
+        "oab",
+        "fase1",
+        "fundamental",
+        "civil",
+        "cc"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "2002",
+        "numero_lei": "10406"
+      },
+      "extracted_metadata": {
+        "num_pages": 616,
+        "extracted_title": "",
+        "char_count": 0,
+        "avg_chars_per_page": 0.0,
+        "extraction_quality": "baixa",
+        "file_size_mb": 3.41,
+        "num_articles_detected": 0,
+        "extracted_at": "2026-03-02T13:30:12.030519"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_cp",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Código Penal (CP)",
+      "path": "data/eixo_fundamental/codigo_penal_1ed.pdf",
+      "sigla": "CP",
+      "peso_oab": "alto",
+      "tags": [
+        "oab",
+        "fase1",
+        "fundamental",
+        "penal",
+        "cp",
+        "criminal"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1940",
+        "decreto_lei": "2848"
+      },
+      "extracted_metadata": {
+        "num_pages": 143,
+        "extracted_title": "Código Penal Edição atualizada até abril de 2017 Código Penal",
+        "char_count": 9363,
+        "avg_chars_per_page": 936.3,
+        "extraction_quality": "media",
+        "file_size_mb": 0.68,
+        "num_articles_detected": 0,
+        "extracted_at": "2026-03-02T13:30:12.197054"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_clt",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Consolidação das Leis do Trabalho (CLT)",
+      "path": "data/eixo_fundamental/clt_e_normas_correlatas_1ed.pdf",
+      "sigla": "CLT",
+      "peso_oab": "alto",
+      "tags": [
+        "oab",
+        "fase1",
+        "fundamental",
+        "trabalho",
+        "clt",
+        "trabalhista"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1943",
+        "decreto_lei": "5452"
+      },
+      "extracted_metadata": {
+        "num_pages": 193,
+        "extracted_title": "Atualizada até dezembro de 2017 Consolidação das Leis",
+        "char_count": 10216,
+        "avg_chars_per_page": 1021.6,
+        "extraction_quality": "boa",
+        "file_size_mb": 3.24,
+        "num_articles_detected": 0,
+        "extracted_at": "2026-03-02T13:30:12.513740"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_cdc",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Código de Defesa do Consumidor (CDC)",
+      "path": "data/eixo_fundamental/cdc-portugues-2013.pdf",
+      "sigla": "CDC",
+      "peso_oab": "alto",
+      "tags": [
+        "oab",
+        "fase1",
+        "fundamental",
+        "consumidor",
+        "cdc"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1990",
+        "numero_lei": "8078"
+      },
+      "extracted_metadata": {
+        "num_pages": 161,
+        "extracted_title": "",
+        "char_count": 0,
+        "avg_chars_per_page": 0.0,
+        "extraction_quality": "baixa",
+        "file_size_mb": 1.58,
+        "num_articles_detected": 0,
+        "extracted_at": "2026-03-02T13:30:12.614398"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_14133_licitacoes",
+      "eixo": "administrativo",
+      "kind": "lei",
+      "title": "Lei 14.133/2021 - Nova Lei de Licitações e Contratos",
+      "path": "data/eixo_adiministrativo/L14133.pdf",
+      "sigla": "Lei 14.133",
+      "peso_oab": "medio",
+      "tags": [
+        "oab",
+        "fase1",
+        "administrativo",
+        "licitacoes",
+        "contratos"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "2021",
+        "numero_lei": "14133"
+      },
+      "extracted_metadata": {
+        "num_pages": 74,
+        "extracted_title": "Presidência da República Secretaria-Geral Subchefia para Assuntos Jurídicos",
+        "char_count": 39666,
+        "avg_chars_per_page": 3966.6,
+        "extraction_quality": "boa",
+        "file_size_mb": 1.35,
+        "num_articles_detected": 21,
+        "extracted_at": "2026-03-02T13:30:13.618678"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_8429_improbidade",
+      "eixo": "administrativo",
+      "kind": "lei",
+      "title": "Lei 8.429/92 - Lei de Improbidade Administrativa",
+      "path": "data/eixo_adiministrativo/L8429.pdf",
+      "sigla": "Lei 8.429",
+      "peso_oab": "medio",
+      "tags": [
+        "oab",
+        "fase1",
+        "administrativo",
+        "improbidade"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1992",
+        "numero_lei": "8429"
+      },
+      "extracted_metadata": {
+        "num_pages": 17,
+        "extracted_title": "Presidência da República Casa Civil Subchefia para Assuntos Jurídicos",
+        "char_count": 49281,
+        "avg_chars_per_page": 4928.1,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.62,
+        "num_articles_detected": 36,
+        "extracted_at": "2026-03-02T13:30:14.603806"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_9784_processo_adm",
+      "eixo": "administrativo",
+      "kind": "lei",
+      "title": "Lei 9.784/99 - Processo Administrativo Federal",
+      "path": "data/eixo_adiministrativo/L9784.pdf",
+      "sigla": "Lei 9.784",
+      "peso_oab": "medio",
+      "tags": [
+        "oab",
+        "fase1",
+        "administrativo",
+        "processo",
+        "processo_administrativo"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1999",
+        "numero_lei": "9784"
+      },
+      "extracted_metadata": {
+        "num_pages": 11,
+        "extracted_title": "Presidência da República Casa Civil Subchefia para Assuntos Jurídicos",
+        "char_count": 32856,
+        "avg_chars_per_page": 3285.6,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.29,
+        "num_articles_detected": 72,
+        "extracted_at": "2026-03-02T13:30:15.388286"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_8112_servidores",
+      "eixo": "administrativo",
+      "kind": "lei",
+      "title": "Lei 8.112/90 - Regime Jurídico dos Servidores Públicos",
+      "path": "data/eixo_adiministrativo/L8112consol.pdf",
+      "sigla": "Lei 8.112",
+      "peso_oab": "baixo",
+      "tags": [
+        "oab",
+        "fase1",
+        "administrativo",
+        "servidores",
+        "rjspu"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1990",
+        "numero_lei": "8112"
+      },
+      "extracted_metadata": {
+        "num_pages": 44,
+        "extracted_title": "Presidência da RepúblicaCasa CivilSubchefia para Assuntos Jurídicos LEI Nº 8.112, DE 11 DE DEZEMBRO DE 1990 Texto compiladoMensagem de vetoProdução de efeitoPartes mantidas pelo Congresso Nacional",
+        "char_count": 48061,
+        "avg_chars_per_page": 4806.1,
+        "extraction_quality": "boa",
+        "file_size_mb": 1.61,
+        "num_articles_detected": 78,
+        "extracted_at": "2026-03-02T13:30:16.517015"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_4717_acao_popular",
+      "eixo": "administrativo",
+      "kind": "lei",
+      "title": "Lei 4.717/65 - Lei da Ação Popular",
+      "path": "data/eixo_adiministrativo/L4717.pdf",
+      "sigla": "Lei 4.717",
+      "peso_oab": "medio",
+      "tags": [
+        "oab",
+        "fase1",
+        "administrativo",
+        "acao_popular",
+        "controle"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "1965",
+        "numero_lei": "4717"
+      },
+      "extracted_metadata": {
+        "num_pages": 5,
+        "extracted_title": "Presidência da República Casa Civil Subchefia para Assuntos Jurídicos",
+        "char_count": 19241,
+        "avg_chars_per_page": 3848.2,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.19,
+        "num_articles_detected": 27,
+        "extracted_at": "2026-03-02T13:30:16.679754"
+      },
+      "extraction_status": "success"
+    },
+    {
+      "id": "lei_12016_mandado_seguranca",
+      "eixo": "administrativo",
+      "kind": "lei",
+      "title": "Lei 12.016/09 - Lei do Mandado de Segurança",
+      "path": "data/eixo_adiministrativo/L12016.pdf",
+      "sigla": "Lei 12.016",
+      "peso_oab": "medio",
+      "tags": [
+        "oab",
+        "fase1",
+        "administrativo",
+        "mandado_seguranca",
+        "controle"
+      ],
+      "metadata": {
+        "source_type": "arquivo_local",
+        "ano": "2009",
+        "numero_lei": "12016"
+      },
+      "extracted_metadata": {
+        "num_pages": 5,
+        "extracted_title": "Presidência da República Casa Civil Subchefia para Assuntos Jurídicos",
+        "char_count": 16379,
+        "avg_chars_per_page": 3275.8,
+        "extraction_quality": "boa",
+        "file_size_mb": 0.21,
+        "num_articles_detected": 38,
+        "extracted_at": "2026-03-02T13:30:16.828621"
+      },
+      "extraction_status": "success"
+    }
+  ],
+  "documentos_ja_processados": [
+    {
+      "id": "lei_cf_1988",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Constituição Federal (CF/88)",
+      "path": "data/eixo_fundamental/cf.pdf",
+      "sigla": "CF",
+      "peso_oab": "critico",
+      "processado": true,
+      "nota": "Já processado no ChromaDB e migrado para Supabase"
+    },
+    {
+      "id": "lei_cpp",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Código de Processo Penal (CPP)",
+      "path": "data/eixo_fundamental/codigo_de_processo_penal_1ed.pdf",
+      "sigla": "CPP",
+      "peso_oab": "alto",
+      "processado": true,
+      "nota": "Já processado no ChromaDB e migrado para Supabase"
+    },
+    {
+      "id": "lei_ctn",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Código Tributário Nacional (CTN)",
+      "path": "data/eixo_fundamental/codigo_tributario_nacional_3ed.pdf",
+      "sigla": "CTN",
+      "peso_oab": "alto",
+      "processado": true,
+      "nota": "Já processado no ChromaDB e migrado para Supabase"
+    },
+    {
+      "id": "lei_cpc_2015",
+      "eixo": "fundamental",
+      "kind": "lei",
+      "title": "Código de Processo Civil (CPC/2015)",
+      "path": "data/eixo_fundamental/CPC_9ed_2016.pdf",
+      "sigla": "CPC",
+      "peso_oab": "alto",
+      "processado": true,
+      "nota": "Já processado no ChromaDB e migrado para Supabase"
+    }
+  ],
+  "documentos_editais_ja_processados": [
+    {
+      "id": "oab_fase1_edital_01",
+      "eixo": "editais",
+      "kind": "edital",
+      "processado": true
+    },
+    {
+      "id": "oab_fase1_edital_locais",
+      "eixo": "editais",
+      "kind": "edital",
+      "processado": true
+    },
+    {
+      "id": "oab_fase1_comunicado_01",
+      "eixo": "editais",
+      "kind": "comunicado",
+      "processado": true
+    },
+    {
+      "id": "oab_fase1_comunicado_02",
+      "eixo": "editais",
+      "kind": "comunicado",
+      "processado": true
+    },
+    {
+      "id": "oab_norma_provimento_cfoab",
+      "eixo": "editais",
+      "kind": "normativo",
+      "processado": true
+    }
+  ],
+  "estatisticas": {
+    "total_documentos_novos": 13,
+    "por_eixo": {
+      "etico": 3,
+      "fundamental_novos": 4,
+      "administrativo": 6,
+      "estatutos_especiais": 0,
+      "jurisprudencia": 0
+    },
+    "total_documentos_ja_processados": 9
+  },
+  "last_updated": "2026-03-02T00:00:00.000000",
+  "last_enrichment": "2026-03-02T13:30:16.828645"
+}

@@ -1,5 +1,8 @@
 'use client';
 
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
+
 interface ProgressBarProps {
   value: number;
   max?: number;
@@ -11,12 +14,12 @@ interface ProgressBarProps {
 }
 
 const colorClasses = {
-  green: 'bg-green-600',
-  blue: 'bg-blue-600',
-  purple: 'bg-purple-600',
-  orange: 'bg-orange-600',
-  yellow: 'bg-yellow-600',
-  red: 'bg-red-600',
+  green: '[&>div]:bg-green-600',
+  blue: '[&>div]:bg-blue-600',
+  purple: '[&>div]:bg-purple-600',
+  orange: '[&>div]:bg-orange-600',
+  yellow: '[&>div]:bg-yellow-600',
+  red: '[&>div]:bg-red-600',
 };
 
 export default function ProgressBar({
@@ -40,29 +43,21 @@ export default function ProgressBar({
     <div className="w-full">
       {(label || showPercentage) && (
         <div className="flex items-center justify-between mb-2">
-          {label && <span className="text-sm text-gray-400 font-medium">{label}</span>}
+          {label && <span className="text-sm text-muted-foreground font-medium">{label}</span>}
           {showPercentage && (
-            <span className="text-sm text-gray-400 font-semibold">
+            <span className="text-sm text-muted-foreground font-semibold">
               {percentage.toFixed(0)}%
             </span>
           )}
         </div>
       )}
-      <div className={`w-full bg-gray-800 rounded-full overflow-hidden ${heightClasses[size]}`}>
-        <div
-          className={`${colorClasses[color]} ${heightClasses[size]} rounded-full transition-all duration-500 ease-out ${
-            animated ? 'animate-pulse-subtle' : ''
-          }`}
-          style={{ width: `${percentage}%` }}
-        >
-          {animated && (
-            <div className="h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-          )}
-        </div>
-      </div>
+      <Progress 
+        value={percentage} 
+        className={cn(heightClasses[size], colorClasses[color])}
+      />
       {value !== undefined && max !== undefined && (
         <div className="flex items-center justify-between mt-1">
-          <span className="text-xs text-gray-600">
+          <span className="text-xs text-muted-foreground">
             {value} / {max}
           </span>
         </div>

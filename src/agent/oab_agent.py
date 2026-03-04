@@ -2,16 +2,13 @@
 Agente Tutor OAB usando LangGraph
 """
 
-import sys
-sys.path.insert(0, 'src')
-
 from typing import TypedDict, Annotated, Sequence
 import operator
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END
 from langgraph.prebuilt import ToolNode
-from agent.tools import SearchTools
+from .tools import SearchTools
 
 
 class AgentState(TypedDict):
@@ -61,8 +58,8 @@ Responda sempre em português, de forma profissional mas acessível."""
         self,
         openai_api_key: str = None,
         model: str = "gpt-4o-mini",
-        chroma_persist_directory: str = "./chroma_db",
-        collection_name: str = "oab_corpus"
+        supabase_url: str = None,
+        supabase_key: str = None
     ):
         """
         Inicializa o agente tutor.
@@ -70,13 +67,14 @@ Responda sempre em português, de forma profissional mas acessível."""
         Args:
             openai_api_key: Chave da API OpenAI
             model: Modelo a usar (padrão: gpt-4o-mini)
-            chroma_persist_directory: Diretório do ChromaDB
-            collection_name: Nome da coleção
+            supabase_url: URL do Supabase
+            supabase_key: Chave do Supabase
         """
-        # Inicializar ferramentas
+        # Inicializar ferramentas com Supabase
         self.search_tools = SearchTools(
-            chroma_persist_directory=chroma_persist_directory,
-            collection_name=collection_name
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            openai_key=openai_api_key
         )
         
         # Obter todas as ferramentas
