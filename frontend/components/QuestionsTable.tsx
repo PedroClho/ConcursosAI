@@ -1,6 +1,10 @@
 'use client';
 
 import { CheckCircle, XCircle, Clock, Eye } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Questao {
   id: string;
@@ -29,114 +33,113 @@ export default function QuestionsTable({ questoes, onViewQuestion }: QuestionsTa
     switch (status) {
       case 'correct':
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-600/20 text-green-400 rounded-full text-xs font-semibold">
+          <Badge variant="default" className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
             <CheckCircle className="w-3 h-3" />
             Correta
-          </span>
+          </Badge>
         );
       case 'incorrect':
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-600/20 text-red-400 rounded-full text-xs font-semibold">
+          <Badge variant="destructive" className="bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20">
             <XCircle className="w-3 h-3" />
             Incorreta
-          </span>
+          </Badge>
         );
       case 'unanswered':
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-gray-600/20 text-gray-400 rounded-full text-xs font-semibold">
+          <Badge variant="secondary">
             <Clock className="w-3 h-3" />
             Não respondida
-          </span>
+          </Badge>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-gray-600/20 text-gray-400 rounded-full text-xs font-semibold">
-            -
-          </span>
+          <Badge variant="secondary">-</Badge>
         );
     }
   };
 
   if (questoes.length === 0) {
     return (
-      <div className="bg-gray-900 rounded-lg border border-gray-800 p-8 text-center">
-        <p className="text-gray-400">Nenhuma questão encontrada</p>
-      </div>
+      <Card className="p-8 text-center">
+        <p className="text-muted-foreground">Nenhuma questão encontrada</p>
+      </Card>
     );
   }
 
   return (
-    <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
-      {/* Header */}
+    <Card className="overflow-hidden p-0">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-800 bg-gray-800/50">
-              <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400">
+            <tr className="border-b border-border bg-muted/50">
+              <th className="text-left px-6 py-4 text-sm font-semibold text-muted-foreground">
                 #
               </th>
-              <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400">
+              <th className="text-left px-6 py-4 text-sm font-semibold text-muted-foreground">
                 Exame
               </th>
-              <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400">
+              <th className="text-left px-6 py-4 text-sm font-semibold text-muted-foreground">
                 Ano
               </th>
-              <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400">
+              <th className="text-left px-6 py-4 text-sm font-semibold text-muted-foreground">
                 Matéria
               </th>
-              <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400">
+              <th className="text-left px-6 py-4 text-sm font-semibold text-muted-foreground">
                 Status
               </th>
-              <th className="text-left px-6 py-4 text-sm font-semibold text-gray-400">
+              <th className="text-left px-6 py-4 text-sm font-semibold text-muted-foreground">
                 Tempo
               </th>
               {onViewQuestion && (
-                <th className="text-right px-6 py-4 text-sm font-semibold text-gray-400">
+                <th className="text-right px-6 py-4 text-sm font-semibold text-muted-foreground">
                   Ações
                 </th>
               )}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-800">
+          <tbody className="divide-y divide-border">
             {questoes.map((questao, index) => (
               <tr
                 key={questao.id}
-                className="hover:bg-gray-800/30 transition-colors"
+                className="hover:bg-accent/50 transition-colors"
               >
-                <td className="px-6 py-4 text-sm text-gray-400">
+                <td className="px-6 py-4 text-sm text-muted-foreground">
                   {index + 1}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-300">
+                <td className="px-6 py-4 text-sm text-foreground">
                   <div className="flex flex-col">
                     <span className="font-medium">{questao.exame}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground">
                       Q{questao.numero_questao}
                     </span>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-300">
+                <td className="px-6 py-4 text-sm text-foreground">
                   {questao.ano}
                 </td>
                 <td className="px-6 py-4 text-sm">
-                  <span className="px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-xs">
+                  <Badge variant="secondary">
                     {questao.materia}
-                  </span>
+                  </Badge>
                 </td>
                 <td className="px-6 py-4 text-sm">
                   {getStatusBadge(questao.status)}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-400">
+                <td className="px-6 py-4 text-sm text-muted-foreground">
                   {formatTempo(questao.tempo)}
                 </td>
                 {onViewQuestion && (
                   <td className="px-6 py-4 text-sm text-right">
-                    <button
+                    <Button
                       onClick={() => onViewQuestion(questao.id)}
-                      className="inline-flex items-center gap-2 px-3 py-1 bg-green-600/20 hover:bg-green-600/30 text-green-400 rounded-lg transition-colors"
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
                     >
                       <Eye className="w-4 h-4" />
                       Ver
-                    </button>
+                    </Button>
                   </td>
                 )}
               </tr>
@@ -146,26 +149,26 @@ export default function QuestionsTable({ questoes, onViewQuestion }: QuestionsTa
       </div>
 
       {/* Footer com resumo */}
-      <div className="border-t border-gray-800 bg-gray-800/30 px-6 py-4">
+      <div className="border-t border-border bg-muted/30 px-6 py-4">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-400">
-            Total: <span className="font-semibold text-white">{questoes.length}</span> questões
+          <span className="text-muted-foreground">
+            Total: <span className="font-semibold text-foreground">{questoes.length}</span> questões
           </span>
           <div className="flex items-center gap-6">
-            <span className="text-gray-400">
-              <span className="text-green-400 font-semibold">
+            <span className="text-muted-foreground">
+              <span className="text-green-600 dark:text-green-400 font-semibold">
                 {questoes.filter((q) => q.status === 'correct').length}
               </span>{' '}
               corretas
             </span>
-            <span className="text-gray-400">
-              <span className="text-red-400 font-semibold">
+            <span className="text-muted-foreground">
+              <span className="text-red-600 dark:text-red-400 font-semibold">
                 {questoes.filter((q) => q.status === 'incorrect').length}
               </span>{' '}
               incorretas
             </span>
-            <span className="text-gray-400">
-              <span className="text-gray-500 font-semibold">
+            <span className="text-muted-foreground">
+              <span className="text-muted-foreground font-semibold">
                 {questoes.filter((q) => q.status === 'unanswered').length}
               </span>{' '}
               não respondidas
@@ -173,6 +176,6 @@ export default function QuestionsTable({ questoes, onViewQuestion }: QuestionsTa
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

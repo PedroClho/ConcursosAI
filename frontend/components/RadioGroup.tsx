@@ -1,6 +1,7 @@
 'use client';
 
 import { CheckCircle, XCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface RadioOption {
   value: string;
@@ -31,30 +32,18 @@ export default function RadioGroup({
         const isCorrect = correctValue && option.value === correctValue;
         const isIncorrect = correctValue && isSelected && option.value !== correctValue;
 
-        let className =
-          'border-2 rounded-lg p-4 transition-all duration-200 ';
-
-        if (disabled) {
-          className += 'cursor-default ';
-        } else {
-          className += 'cursor-pointer hover:bg-gray-800/50 ';
-        }
-
-        if (isCorrect) {
-          className += 'border-green-500 bg-green-500/10 shadow-lg shadow-green-500/20';
-        } else if (isIncorrect) {
-          className += 'border-red-500 bg-red-500/10 shadow-lg shadow-red-500/20';
-        } else if (isSelected) {
-          className += 'border-green-500 bg-green-500/5';
-        } else {
-          className += 'border-gray-700 hover:border-gray-600';
-        }
-
         return (
           <div
             key={option.value}
             onClick={() => !disabled && onChange(option.value)}
-            className={className}
+            className={cn(
+              'border-2 rounded-lg p-4 transition-all duration-200',
+              disabled ? 'cursor-default' : 'cursor-pointer hover:bg-accent/50',
+              isCorrect && 'border-primary bg-primary/10 shadow-lg',
+              isIncorrect && 'border-destructive bg-destructive/10 shadow-lg',
+              !isCorrect && !isIncorrect && isSelected && 'border-primary bg-primary/5',
+              !isCorrect && !isIncorrect && !isSelected && 'border-border hover:border-primary/50'
+            )}
           >
             <label className="flex items-center gap-4 cursor-pointer">
               {/* Radio Button Visual */}
@@ -69,31 +58,31 @@ export default function RadioGroup({
                   className="sr-only"
                 />
                 <div
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                  className={cn(
+                    'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all',
                     isSelected
-                      ? 'border-green-500 bg-green-500'
-                      : 'border-gray-600 bg-gray-800'
-                  }`}
+                      ? 'border-primary bg-primary'
+                      : 'border-muted-foreground bg-background'
+                  )}
                 >
                   {isSelected && (
-                    <div className="w-2 h-2 rounded-full bg-white"></div>
+                    <div className="w-2 h-2 rounded-full bg-primary-foreground"></div>
                   )}
                 </div>
               </div>
 
               {/* Label */}
               <div className="flex-1 flex items-start gap-3">
-                <span className="font-bold text-gray-400 flex-shrink-0 min-w-[2rem]">
+                <span className="font-bold text-muted-foreground flex-shrink-0 min-w-[2rem]">
                   {option.value})
                 </span>
                 <span
-                  className={`flex-1 ${
-                    isCorrect
-                      ? 'text-green-300 font-medium'
-                      : isIncorrect
-                      ? 'text-red-300'
-                      : 'text-gray-300'
-                  }`}
+                  className={cn(
+                    'flex-1',
+                    isCorrect && 'text-primary font-medium',
+                    isIncorrect && 'text-destructive',
+                    !isCorrect && !isIncorrect && 'text-foreground'
+                  )}
                 >
                   {option.label}
                 </span>
@@ -101,8 +90,8 @@ export default function RadioGroup({
 
               {/* Status Icon */}
               <div className="flex-shrink-0">
-                {isCorrect && <CheckCircle className="w-5 h-5 text-green-500" />}
-                {isIncorrect && <XCircle className="w-5 h-5 text-red-500" />}
+                {isCorrect && <CheckCircle className="w-5 h-5 text-primary" />}
+                {isIncorrect && <XCircle className="w-5 h-5 text-destructive" />}
               </div>
             </label>
           </div>

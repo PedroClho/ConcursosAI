@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Castro - Tutor OAB',
+  title: 'Atlas - Tutor OAB',
   description: 'Seu assistente inteligente para o Exame de Ordem',
 }
 
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} bg-gray-950 text-white`}>
+      <body className={`${inter.className} font-sans antialiased`}>
         <div className="flex h-screen overflow-hidden">
           {/* Sidebar */}
           <Sidebar />

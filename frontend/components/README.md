@@ -1,6 +1,6 @@
-# 📦 Componentes do Castro Frontend
+# 📦 Componentes do Atlas Frontend
 
-Componentes React reutilizáveis para a plataforma Castro de preparação para OAB.
+Componentes React reutilizáveis para a plataforma Atlas de preparação para OAB.
 
 ---
 
@@ -16,7 +16,7 @@ Card completo para exibir questões de simulados com alternativas, gabarito e ex
 - `respostaUsuario?: string` - Resposta selecionada pelo usuário
 - `mostrarGabarito: boolean` - Se deve mostrar gabarito e feedback
 - `onSelecionarResposta: (letra: string) => void` - Callback ao selecionar alternativa
-- `explicacao?: string` - Explicação do agente tutor (markdown)
+- `explicacao?: string` - Explicação do Atlas (markdown)
 - `loadingExplicacao?: boolean` - Estado de carregamento da explicação
 - `onExplicar?: () => void` - Callback para solicitar explicação
 
@@ -36,7 +36,7 @@ Card completo para exibir questões de simulados com alternativas, gabarito e ex
 **Features:**
 - ✅ Visual moderno com badges
 - ✅ Feedback visual (correto/incorreto)
-- ✅ Integração com agente tutor
+- ✅ Integração com Atlas
 - ✅ Renderização de markdown para explicações
 - ✅ Animações e transições suaves
 
@@ -244,4 +244,4 @@ Todos os componentes utilizam:
 
 ---
 
-**Desenvolvido com ❤️ para Castro - Plataforma OAB**
+**Desenvolvido com ❤️ para Atlas - Plataforma OAB**

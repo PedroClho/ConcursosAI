@@ -1,15 +1,19 @@
 'use client';
 
-import { MessageSquare, BookOpen, BarChart3, Scale } from 'lucide-react';
+import { useState } from 'react';
+import { MessageSquare, BookOpen, BarChart3, Scale, ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 
 const navigation = [
   {
-    name: 'Chat Tutor',
+    name: 'Chat Atlas',
     href: '/',
     icon: MessageSquare,
-    description: 'Converse com o tutor'
+    description: 'Converse com o Atlas'
   },
   {
     name: 'Simulado',
@@ -27,55 +31,102 @@ const navigation = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
   
   return (
-    <aside className="w-64 bg-gray-900 border-r border-gray-800 flex flex-col">
+    <aside
+      className={cn(
+        'flex h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300',
+        collapsed ? 'w-[72px]' : 'w-[260px]'
+      )}
+    >
       {/* Logo */}
-      <div className="p-6 border-b border-gray-800">
-        <div className="flex items-center gap-3">
-          <div className="bg-green-600 p-2 rounded-lg">
-            <Scale className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-lg text-white" style={{ fontWeight: 400, letterSpacing: '-0.02em' }}>Castro</h1>
-            <p className="text-xs text-gray-400">Tutor OAB</p>
-          </div>
+      <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl overflow-hidden">
+          <img 
+            src="/atlas-logo.png" 
+            alt="Atlas Logo" 
+            className="w-full h-full object-contain"
+          />
         </div>
+        {!collapsed && (
+          <div>
+            <h1 className="text-lg font-bold text-sidebar-foreground">Atlas</h1>
+            <p className="text-xs text-muted-foreground">Tutor OAB</p>
+          </div>
+        )}
       </div>
 
       {/* Navegação */}
-      <nav className="flex-1 p-4">
-        <div className="space-y-2">
-          {navigation.map((item) => {
-            const isActive = pathname === item.href;
-            const Icon = item.icon;
-            
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  isActive
-                    ? 'bg-green-600 text-white shadow-lg'
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                }`}
-              >
-                <Icon className="w-5 h-5" />
+      <nav className="flex-1 space-y-1 px-3 py-4">
+        {navigation.map((item) => {
+          const isActive = pathname === item.href;
+          const Icon = item.icon;
+          
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-sidebar-accent text-sidebar-primary'
+                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+              )}
+            >
+              <Icon className={cn('size-5 shrink-0', isActive && 'text-sidebar-primary')} />
+              {!collapsed && (
                 <div className="flex-1">
                   <p className="font-medium">{item.name}</p>
                   <p className="text-xs opacity-75">{item.description}</p>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-gray-800">
-        <div className="text-xs text-gray-500 text-center">
-          <p>Versão 2.0</p>
-          <p>OAB 1ª Fase</p>
+      {/* Collapse toggle */}
+      <div className="px-3 pb-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCollapsed(!collapsed)}
+          className="w-full justify-center text-muted-foreground"
+        >
+          {collapsed ? (
+            <ChevronRight className="size-4" />
+          ) : (
+            <ChevronLeft className="size-4" />
+          )}
+        </Button>
+      </div>
+
+      {/* User profile */}
+      <div className="border-t border-sidebar-border px-3 py-4">
+        <div className="flex items-center gap-3">
+          <Avatar className="size-9">
+            <AvatarImage src="" alt="Usuário" />
+            <AvatarFallback className="bg-primary/15 text-primary text-xs font-semibold">
+              US
+            </AvatarFallback>
+          </Avatar>
+          {!collapsed && (
+            <div className="flex flex-1 items-center justify-between">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-sidebar-foreground">
+                  Usuário
+                </p>
+                <p className="truncate text-xs text-muted-foreground">
+                  Versão 2.0
+                </p>
+              </div>
+              <Button variant="ghost" size="icon" className="size-8 text-muted-foreground">
+                <Settings className="size-4" />
+                <span className="sr-only">Configurações</span>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </aside>
