@@ -14,10 +14,19 @@
 **Castro** é uma plataforma completa de estudos para o Exame de Ordem da OAB, combinando:
 
 - 🤖 **Agente Tutor Inteligente** (LangGraph + LangChain)
-- 📚 **RAG com Leis Brasileiras** (CF, CPC, CPP, CTN)
+- 📚 **RAG com 17 Leis Brasileiras** organizadas por eixos
 - 💾 **2.210 Questões Reais** (OAB 2010-2018)
 - 🎯 **Simulados Personalizados**
 - 📊 **Análise de Desempenho**
+- ☁️ **Supabase PostgreSQL + pgvector**
+
+### 📖 Organização do Conteúdo
+
+**Eixo Ético** (CRÍTICO): EAOAB, Código de Ética, Regulamento  
+**Eixo Fundamental** (ALTO): CF, CC, CP, CPC, CPP, CLT, CTN, CDC  
+**Eixo Administrativo** (MÉDIO): Licitações, Improbidade, Processo Adm, etc.
+
+**Total**: ~8.100 artigos indexados | ~8.500 embeddings vetoriais
 
 ---
 
@@ -43,10 +52,33 @@ copy env_template.txt .env
 python verificar_config.py
 ```
 
-### **3. Ingestão de Dados**
+### **3. Processar RAG por Eixos (RECOMENDADO)**
 
 ```powershell
-# RAG: Processar leis e editais
+# Opção 1: Menu interativo
+python scripts/processar_tudo.py
+
+# Opção 2: Processar por etapas
+python scripts/verify_files.py              # Verificar PDFs
+python scripts/enrich_manifest_v2.py        # Extrair metadados
+
+# Processar cada eixo
+python scripts/ingest_eixo_etico.py
+python scripts/ingest_eixo_fundamental_novos.py
+python scripts/ingest_eixo_administrativo.py
+
+# Migrar para Supabase
+python scripts/migrate_to_supabase.py --eixo etico
+python scripts/migrate_to_supabase.py --eixo fundamental
+python scripts/migrate_to_supabase.py --eixo administrativo
+```
+
+**Guia completo**: Veja `GUIA_PROCESSAMENTO_EIXOS.md`
+
+### **3b. Alternativa: Ingestão Básica (Método Antigo)**
+
+```powershell
+# RAG: Processar leis e editais (método antigo)
 python scripts/ingest_corpus.py
 
 # Questões: Baixar dataset do Hugging Face
@@ -208,7 +240,18 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ## 📚 Documentação
 
+### **Como Usar**
 - **Início Rápido**: `COMO_EXECUTAR.md`
+- **Guia de Início**: `GUIA_INICIO.md`
+
+### **Migração Supabase** ⭐ NOVO
+- **Resumo Executivo**: `RESUMO_EXECUTIVO.md` - Leia isto primeiro!
+- **Guia Rápido**: `GUIA_RAPIDO_MIGRACAO.md` - 20 minutos para migrar
+- **Inventário RAG**: `INVENTARIO_RAG_COMPLETO.md` - Todo o conteúdo
+- **Guia Completo**: `MIGRACAO_SUPABASE.md` - Documentação detalhada (800+ linhas)
+- **Resumo Técnico**: `RESUMO_RAG_SUPABASE.md`
+
+### **Estrutura e Técnica**
 - **Estrutura**: `ESTRUTURA_PROJETO.md`
 - **Questões**: `questoes/CAPTURA_QUESTOES.md`
 - **Frontend**: `docs/FRONTEND_SETUP.md`

@@ -1,6 +1,6 @@
 """
 API Backend para Plataforma Castro - Tutores para Concursos
-FastAPI + LangGraph + ChromaDB
+FastAPI + LangGraph + Supabase
 """
 
 from fastapi import FastAPI, HTTPException
@@ -10,15 +10,16 @@ from typing import List, Optional
 import sys
 import os
 from datetime import datetime
-import sqlite3
 import json
+import random
 
 # Adicionar raiz ao path
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, root_dir)
 
-from agente.oab_agent import OABTutorAgent
+from src.agent.oab_agent import OABTutorAgent
 from dotenv import load_dotenv
+from supabase import create_client
 
 # Carregar variáveis de ambiente do .env na raiz do projeto
 dotenv_path = os.path.join(root_dir, '.env')
@@ -137,40 +138,42 @@ class ListarQuestoesResponse(BaseModel):
 
 
 # =====================================================================
-# CONEXÃO COM BANCO DE QUESTÕES
+# CONEXÃO COM BANCO DE QUESTÕES (SUPABASE)
 # =====================================================================
 
-DB_PATH = os.path.join(root_dir, "questoes", "database", "oab_questoes.db")
-
-def get_db_connection():
-    """Cria conexão com banco SQLite"""
-    if not os.path.exists(DB_PATH):
+def get_supabase_client():
+    """Retorna cliente Supabase para questões"""
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+    
+    if not supabase_url or not supabase_key:
         raise HTTPException(
             status_code=500,
-            detail="Banco de questões não encontrado. Execute: python questoes/scripts/criar_banco_questoes.py"
+            detail="Configuração do Supabase não encontrada no .env"
         )
-    return sqlite3.connect(DB_PATH)
+    
+    return create_client(supabase_url, supabase_key)
 
 
-def questao_from_row(row: tuple) -> QuestaoModel:
-    """Converte row do SQLite para QuestaoModel"""
+def questao_from_supabase(data: dict) -> QuestaoModel:
+    """Converte dados do Supabase para QuestaoModel"""
     return QuestaoModel(
-        id=row[0],
-        exam_id=row[1],
-        exame=row[2],
-        ano=row[3],
-        fase=row[4],
-        numero_questao=row[5],
-        materia=row[6],
-        materia_original=row[7],
-        assunto=row[8],
-        enunciado=row[9],
-        alternativas=[AlternativaModel(**alt) for alt in json.loads(row[10])],
-        gabarito=row[11],
-        justificativa=row[12],
-        anulada=bool(row[13]),
-        dificuldade=row[14],
-        tags=json.loads(row[15]) if row[15] else []
+        id=data['id'],
+        exam_id=data['exam_id'],
+        exame=data['exame'],
+        ano=data['ano'],
+        fase=data['fase'],
+        numero_questao=data['numero_questao'],
+        materia=data['materia'],
+        materia_original=data.get('materia_original'),
+        assunto=data.get('assunto'),
+        enunciado=data['enunciado'],
+        alternativas=[AlternativaModel(**alt) for alt in data['alternativas']],
+        gabarito=data['gabarito'],
+        justificativa=data.get('justificativa'),
+        anulada=data['anulada'],
+        dificuldade=data['dificuldade'],
+        tags=data.get('tags', [])
     )
 
 
@@ -180,21 +183,27 @@ def questao_from_row(row: tuple) -> QuestaoModel:
 
 print("Inicializando agentes...")
 
-# Obter API Key
+# Obter API Keys
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+
 if not OPENAI_API_KEY:
     print("[ERRO] OPENAI_API_KEY não encontrada no .env")
     oab_agent = None
+elif not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
+    print("[ERRO] SUPABASE_URL ou SUPABASE_SERVICE_KEY não encontradas no .env")
+    oab_agent = None
 else:
-    # Agente OAB
+    # Agente OAB com Supabase
     try:
         oab_agent = OABTutorAgent(
             openai_api_key=OPENAI_API_KEY,
             model="gpt-4o-mini",
-            chroma_persist_directory="./chroma_db",
-            collection_name="oab_corpus"
+            supabase_url=SUPABASE_URL,
+            supabase_key=SUPABASE_SERVICE_KEY
         )
-        print("[OK] Agente OAB inicializado")
+        print("[OK] Agente OAB inicializado com Supabase RAG")
     except Exception as e:
         print(f"[ERRO] Falha ao inicializar agente OAB: {e}")
         oab_agent = None
@@ -283,34 +292,20 @@ async def oab_search(request: SearchRequest):
         )
     
     try:
-        # Montar filtros com sintaxe correta do ChromaDB
-        filters = None
-        if request.kind and request.law_filter:
-            # Múltiplos filtros: usar $and
-            filters = {
-                "$and": [
-                    {"kind": request.kind},
-                    {"sigla": request.law_filter.upper()}
-                ]
-            }
-        elif request.kind:
-            filters = {"kind": request.kind}
-        elif request.law_filter:
-            filters = {"sigla": request.law_filter.upper()}
-        
-        # Buscar
-        results = oab_agent.search_tools.processor.search(
+        # Buscar usando Supabase RAG
+        results = oab_agent.search_tools.rag.search(
             query=request.query,
             top_k=request.top_k,
-            filter_metadata=filters
+            filter_kind=request.kind,
+            # TODO: Adicionar filtro por sigla quando necessário
         )
         
         # Converter para modelo de resposta
         return [
             SearchResult(
-                document=result['document'],
+                document=result['content'],
                 metadata=result['metadata'],
-                relevance_score=result['relevance_score']
+                relevance_score=result['similarity']
             )
             for result in results
         ]
@@ -339,13 +334,13 @@ async def oab_stats():
         )
     
     try:
-        stats = oab_agent.search_tools.processor.get_collection_stats()
+        stats = oab_agent.search_tools.rag.get_stats_by_eixo()
         
         return StatsResponse(
-            total_items=stats['total_articles'],
-            laws_count=stats['laws_count'],
-            available_laws=stats['laws'],
-            collection_name=stats['collection_name']
+            total_items=stats.get('total_embeddings', 0),
+            laws_count=stats.get('total_documents', 0),
+            available_laws=[],  # TODO: Extrair lista de leis do Supabase
+            collection_name="supabase_rag"
         )
     
     except Exception as e:
@@ -363,23 +358,26 @@ async def oab_stats():
 async def listar_materias():
     """Lista todas as matérias disponíveis no banco de questões"""
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        supabase = get_supabase_client()
         
-        cursor.execute("""
-            SELECT DISTINCT materia, COUNT(*) as total
-            FROM questoes
-            WHERE anulada = 0
-            GROUP BY materia
-            ORDER BY total DESC
-        """)
+        # Buscar todas as questões não anuladas
+        response = supabase.table('questoes_oab')\
+            .select('materia')\
+            .eq('anulada', False)\
+            .execute()
         
+        # Contar por matéria
+        materias_count = {}
+        for questao in response.data:
+            materia = questao['materia']
+            materias_count[materia] = materias_count.get(materia, 0) + 1
+        
+        # Ordenar por total
         materias = [
-            {"nome": row[0], "total": row[1]}
-            for row in cursor.fetchall()
+            {"nome": materia, "total": total}
+            for materia, total in sorted(materias_count.items(), key=lambda x: x[1], reverse=True)
         ]
         
-        conn.close()
         return materias
     
     except Exception as e:
@@ -394,52 +392,46 @@ async def filtrar_questoes(filtros: FiltroQuestoesRequest):
     Usado na página de simulados para buscar questões específicas.
     """
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        supabase = get_supabase_client()
         
-        # Montar query
-        where_clauses = []
-        params = []
+        # Construir query base
+        query = supabase.table('questoes_oab').select('*', count='exact')
         
+        # Aplicar filtros
         if filtros.materia:
-            where_clauses.append("materia = ?")
-            params.append(filtros.materia)
+            query = query.eq('materia', filtros.materia)
         
         if filtros.ano:
-            where_clauses.append("ano = ?")
-            params.append(filtros.ano)
+            query = query.eq('ano', filtros.ano)
         
         if filtros.fase:
-            where_clauses.append("fase = ?")
-            params.append(filtros.fase)
+            query = query.eq('fase', filtros.fase)
         
         if not filtros.incluir_anuladas:
-            where_clauses.append("anulada = 0")
+            query = query.eq('anulada', False)
         
-        where_sql = " AND ".join(where_clauses) if where_clauses else "1=1"
+        # Executar query para contar total
+        count_response = query.execute()
+        total = count_response.count
         
-        # Contar total
-        count_query = f"SELECT COUNT(*) FROM questoes WHERE {where_sql}"
-        cursor.execute(count_query, params)
-        total = cursor.fetchone()[0]
+        # Buscar questões com paginação (Supabase não tem RANDOM direto, então pegamos todas e embaralhamos)
+        query = supabase.table('questoes_oab').select('*')
         
-        # Buscar questões
-        query = f"""
-            SELECT id, exam_id, exame, ano, fase, numero_questao,
-                   materia, materia_original, assunto, enunciado,
-                   alternativas, gabarito, justificativa, anulada,
-                   dificuldade, tags
-            FROM questoes
-            WHERE {where_sql}
-            ORDER BY RANDOM()
-            LIMIT ? OFFSET ?
-        """
+        if filtros.materia:
+            query = query.eq('materia', filtros.materia)
+        if filtros.ano:
+            query = query.eq('ano', filtros.ano)
+        if filtros.fase:
+            query = query.eq('fase', filtros.fase)
+        if not filtros.incluir_anuladas:
+            query = query.eq('anulada', False)
         
-        cursor.execute(query, params + [filtros.limit, filtros.offset])
+        # Aplicar range para paginação
+        query = query.range(filtros.offset, filtros.offset + filtros.limit - 1)
         
-        questoes = [questao_from_row(row) for row in cursor.fetchall()]
+        response = query.execute()
         
-        conn.close()
+        questoes = [questao_from_supabase(q) for q in response.data]
         
         return ListarQuestoesResponse(
             questoes=questoes,
@@ -456,25 +448,17 @@ async def filtrar_questoes(filtros: FiltroQuestoesRequest):
 async def detalhar_questao(questao_id: str):
     """Retorna detalhes de uma questão específica"""
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        supabase = get_supabase_client()
         
-        cursor.execute("""
-            SELECT id, exam_id, exame, ano, fase, numero_questao,
-                   materia, materia_original, assunto, enunciado,
-                   alternativas, gabarito, justificativa, anulada,
-                   dificuldade, tags
-            FROM questoes
-            WHERE id = ?
-        """, (questao_id,))
+        response = supabase.table('questoes_oab')\
+            .select('*')\
+            .eq('id', questao_id)\
+            .execute()
         
-        row = cursor.fetchone()
-        conn.close()
-        
-        if not row:
+        if not response.data:
             raise HTTPException(status_code=404, detail="Questão não encontrada")
         
-        return questao_from_row(row)
+        return questao_from_supabase(response.data[0])
     
     except HTTPException:
         raise
@@ -486,27 +470,22 @@ async def detalhar_questao(questao_id: str):
 async def questao_aleatoria(materia: str):
     """Retorna uma questão aleatória de uma matéria"""
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        supabase = get_supabase_client()
         
-        cursor.execute("""
-            SELECT id, exam_id, exame, ano, fase, numero_questao,
-                   materia, materia_original, assunto, enunciado,
-                   alternativas, gabarito, justificativa, anulada,
-                   dificuldade, tags
-            FROM questoes
-            WHERE materia = ? AND anulada = 0
-            ORDER BY RANDOM()
-            LIMIT 1
-        """, (materia,))
+        # Buscar todas as questões da matéria (não anuladas)
+        response = supabase.table('questoes_oab')\
+            .select('*')\
+            .eq('materia', materia)\
+            .eq('anulada', False)\
+            .execute()
         
-        row = cursor.fetchone()
-        conn.close()
-        
-        if not row:
+        if not response.data:
             raise HTTPException(status_code=404, detail=f"Nenhuma questão encontrada para {materia}")
         
-        return questao_from_row(row)
+        # Escolher uma aleatória
+        questao_data = random.choice(response.data)
+        
+        return questao_from_supabase(questao_data)
     
     except HTTPException:
         raise

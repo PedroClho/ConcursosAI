@@ -2,22 +2,20 @@
 Ferramentas (Tools) para o Agente Tutor OAB
 """
 
-import sys
-sys.path.insert(0, 'src')
-
 from typing import Optional, Literal
 from langchain_core.tools import tool, StructuredTool
-from rag_pipeline import LawProcessor
+from ..rag_pipeline.supabase_rag import SupabaseRAGProcessor
 
 
 class SearchTools:
     """Classe com ferramentas de busca para o agente"""
     
-    def __init__(self, chroma_persist_directory: str = "./chroma_db", collection_name: str = "oab_corpus"):
-        """Inicializa as ferramentas com conexão ao ChromaDB"""
-        self.processor = LawProcessor(
-            chroma_persist_directory=chroma_persist_directory,
-            collection_name=collection_name
+    def __init__(self, supabase_url: str, supabase_key: str, openai_key: str):
+        """Inicializa as ferramentas com conexão ao Supabase"""
+        self.rag = SupabaseRAGProcessor(
+            supabase_url=supabase_url,
+            supabase_key=supabase_key,
+            openai_key=openai_key
         )
     
     def search_laws(self, query: str, law_filter: Optional[str] = None, top_k: int = 3) -> str:
@@ -32,18 +30,13 @@ class SearchTools:
         Returns:
             Texto formatado com artigos encontrados e suas referências
         """
-        # Montar filtros com sintaxe correta do ChromaDB
-        if law_filter:
-            filters = {
-                "$and": [
-                    {"kind": "lei"},
-                    {"sigla": law_filter.upper()}
-                ]
-            }
-        else:
-            filters = {"kind": "lei"}
-        
-        results = self.processor.search(query, top_k=top_k, filter_metadata=filters)
+        # Buscar usando Supabase RAG
+        results = self.rag.search(
+            query=query,
+            top_k=top_k,
+            filter_kind="lei",
+            match_threshold=0.5
+        )
         
         if not results:
             return f"Nenhum artigo encontrado para: {query}"
@@ -53,8 +46,8 @@ class SearchTools:
             meta = result['metadata']
             law_name = meta.get('law_name', 'N/A')
             article_ref = meta.get('full_reference', 'N/A')
-            relevance = result['relevance_score']
-            text = result['document'][:500]  # Limitar tamanho
+            relevance = result['similarity']
+            text = result['content'][:500]  # Limitar tamanho
             
             output.append(
                 f"[{i}] {law_name} - {article_ref} (Relevância: {relevance:.1%})\n"
@@ -74,8 +67,12 @@ class SearchTools:
         Returns:
             Texto com informações do edital
         """
-        filters = {"kind": "edital"}
-        results = self.processor.search(query, top_k=top_k, filter_metadata=filters)
+        results = self.rag.search(
+            query=query,
+            top_k=top_k,
+            filter_kind="edital",
+            match_threshold=0.5
+        )
         
         if not results:
             return f"Nenhuma informação encontrada no edital para: {query}"
@@ -84,8 +81,8 @@ class SearchTools:
         for i, result in enumerate(results, 1):
             meta = result['metadata']
             doc_name = meta.get('document_name', 'Edital')
-            relevance = result['relevance_score']
-            text = result['document'][:400]
+            relevance = result['similarity']
+            text = result['content'][:400]
             
             output.append(
                 f"[{i}] {doc_name} (Relevância: {relevance:.1%})\n"
@@ -105,8 +102,12 @@ class SearchTools:
         Returns:
             Texto com regras do provimento
         """
-        filters = {"kind": "normativo"}
-        results = self.processor.search(query, top_k=top_k, filter_metadata=filters)
+        results = self.rag.search(
+            query=query,
+            top_k=top_k,
+            filter_kind="normativo",
+            match_threshold=0.5
+        )
         
         if not results:
             return f"Nenhuma informação encontrada no provimento para: {query}"
@@ -115,8 +116,8 @@ class SearchTools:
         for i, result in enumerate(results, 1):
             meta = result['metadata']
             doc_name = meta.get('document_name', 'Provimento CFOAB')
-            relevance = result['relevance_score']
-            text = result['document'][:400]
+            relevance = result['similarity']
+            text = result['content'][:400]
             
             output.append(
                 f"[{i}] {doc_name} (Relevância: {relevance:.1%})\n"
@@ -132,13 +133,17 @@ class SearchTools:
         Returns:
             Texto com estatísticas
         """
-        stats = self.processor.get_collection_stats()
+        stats = self.rag.get_stats_by_eixo()
         
         return (
-            f"Base de Dados OAB:\n"
-            f"- Total de itens: {stats['total_articles']}\n"
-            f"- Leis indexadas: {stats['laws_count']}\n"
-            f"- Leis disponíveis: {', '.join(stats['laws']) if stats['laws'] else 'Nenhuma'}\n"
+            f"Base de Dados OAB (Supabase):\n"
+            f"- Total de embeddings: {stats.get('total_embeddings', 0)}\n"
+            f"- Total de artigos: {stats.get('total_artigos', 0)}\n"
+            f"- Documentos: {stats.get('total_documents', 0)}\n"
+            f"- Eixo Ético: {stats.get('artigos_etico', 0)} artigos\n"
+            f"- Eixo Fundamental: {stats.get('artigos_fundamental', 0)} artigos\n"
+            f"- Eixo Administrativo: {stats.get('artigos_administrativo', 0)} artigos\n"
+            f"- Questões OAB: {stats.get('total_questoes', 0)}\n"
         )
     
     def get_all_tools(self):
