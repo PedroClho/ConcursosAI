@@ -16,6 +16,7 @@ import ProgressBar from '@/components/ProgressBar';
 import RadioGroup from '@/components/RadioGroup';
 import QuestionCard from '@/components/QuestionCard';
 import QuestionsTable from '@/components/QuestionsTable';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ComponentesPage() {
   // Dados de exemplo
@@ -89,13 +90,13 @@ export default function ComponentesPage() {
         subtitle="Visualize todos os componentes disponíveis"
       />
 
-      <div className="flex-1 overflow-y-auto bg-gray-950">
+      <div className="flex-1 overflow-y-auto bg-background">
         <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
           {/* Seção 1: StatsCard */}
           <section>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">1. StatsCard 📊</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-bold text-foreground mb-2">1. StatsCard 📊</h2>
+              <p className="text-muted-foreground">
                 Cards de estatísticas com ícones, valores e indicadores de tendência.
               </p>
             </div>
@@ -103,7 +104,7 @@ export default function ComponentesPage() {
             <div className="space-y-8">
               {/* Tamanho Grande */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Tamanho Grande (lg)</h3>
+                <h3 className="text-lg text-foreground mb-4">Tamanho Grande (lg)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <StatsCard
                     title="Questões Respondidas"
@@ -126,7 +127,7 @@ export default function ComponentesPage() {
 
               {/* Tamanho Médio */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Tamanho Médio (md) - Padrão</h3>
+                <h3 className="text-lg text-foreground mb-4">Tamanho Médio (md) - Padrão</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <StatsCard
                     title="Horas de Estudo"
@@ -161,7 +162,7 @@ export default function ComponentesPage() {
 
               {/* Tamanho Pequeno */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Tamanho Pequeno (sm)</h3>
+                <h3 className="text-lg text-foreground mb-4">Tamanho Pequeno (sm)</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <StatsCard
                     title="Acertos"
@@ -189,7 +190,7 @@ export default function ComponentesPage() {
 
               {/* Todas as cores */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Todas as Cores</h3>
+                <h3 className="text-lg text-foreground mb-4">Todas as Cores</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
                   <StatsCard title="Green" value="100" color="green" size="sm" />
                   <StatsCard title="Blue" value="100" color="blue" size="sm" />
@@ -206,92 +207,96 @@ export default function ComponentesPage() {
           {/* Seção 2: ProgressBar */}
           <section>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">2. ProgressBar 📈</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-bold text-foreground mb-2">2. ProgressBar 📈</h2>
+              <p className="text-muted-foreground">
                 Barras de progresso animadas com diferentes cores e tamanhos.
               </p>
             </div>
 
-            <div className="bg-gray-900 rounded-lg border border-gray-800 p-6 space-y-6">
-              {/* Tamanhos */}
-              <div className="space-y-4">
-                <h3 className="text-lg text-gray-300">Tamanhos</h3>
-                <ProgressBar value={75} max={100} label="Grande (lg)" size="lg" color="green" />
-                <ProgressBar value={60} max={100} label="Médio (md) - Padrão" size="md" color="blue" />
-                <ProgressBar value={45} max={100} label="Pequeno (sm)" size="sm" color="purple" />
-              </div>
+            <Card>
+              <CardContent className="space-y-6">
+                {/* Tamanhos */}
+                <div className="space-y-4">
+                  <h3 className="text-lg text-foreground">Tamanhos</h3>
+                  <ProgressBar value={75} max={100} label="Grande (lg)" size="lg" color="green" />
+                  <ProgressBar value={60} max={100} label="Médio (md) - Padrão" size="md" color="blue" />
+                  <ProgressBar value={45} max={100} label="Pequeno (sm)" size="sm" color="purple" />
+                </div>
 
-              {/* Cores */}
-              <div className="space-y-4">
-                <h3 className="text-lg text-gray-300">Cores Disponíveis</h3>
-                <ProgressBar value={85} label="Direito Constitucional" color="green" animated />
-                <ProgressBar value={70} label="Direito Administrativo" color="blue" animated />
-                <ProgressBar value={60} label="Direito Civil" color="purple" animated />
-                <ProgressBar value={55} label="Direito Penal" color="orange" animated />
-                <ProgressBar value={40} label="Direito Processual" color="yellow" animated />
-                <ProgressBar value={30} label="Direito Tributário" color="red" animated />
-              </div>
+                {/* Cores */}
+                <div className="space-y-4">
+                  <h3 className="text-lg text-foreground">Cores Disponíveis</h3>
+                  <ProgressBar value={85} label="Direito Constitucional" color="green" animated />
+                  <ProgressBar value={70} label="Direito Administrativo" color="blue" animated />
+                  <ProgressBar value={60} label="Direito Civil" color="purple" animated />
+                  <ProgressBar value={55} label="Direito Penal" color="orange" animated />
+                  <ProgressBar value={40} label="Direito Processual" color="yellow" animated />
+                  <ProgressBar value={30} label="Direito Tributário" color="red" animated />
+                </div>
 
-              {/* Com e sem animação */}
-              <div className="space-y-4">
-                <h3 className="text-lg text-gray-300">Animação</h3>
-                <ProgressBar value={70} label="Com animação" color="green" animated={true} />
-                <ProgressBar value={70} label="Sem animação" color="green" animated={false} />
-              </div>
-            </div>
+                {/* Com e sem animação */}
+                <div className="space-y-4">
+                  <h3 className="text-lg text-foreground">Animação</h3>
+                  <ProgressBar value={70} label="Com animação" color="green" animated={true} />
+                  <ProgressBar value={70} label="Sem animação" color="green" animated={false} />
+                </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Seção 3: RadioGroup */}
           <section>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">3. RadioGroup 📻</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-bold text-foreground mb-2">3. RadioGroup 📻</h2>
+              <p className="text-muted-foreground">
                 Grupo de opções de rádio com feedback visual para questões.
               </p>
             </div>
 
-            <div className="bg-gray-900 rounded-lg border border-gray-800 p-6 space-y-8">
-              {/* Normal */}
-              <div>
-                <h3 className="text-lg text-gray-300 mb-4">Estado Normal (Selecionável)</h3>
-                <RadioGroup
-                  options={[
-                    { value: 'A', label: 'Esta é a alternativa A - pode ser selecionada' },
-                    { value: 'B', label: 'Esta é a alternativa B - pode ser selecionada' },
-                    { value: 'C', label: 'Esta é a alternativa C - pode ser selecionada' },
-                    { value: 'D', label: 'Esta é a alternativa D - pode ser selecionada' },
-                  ]}
-                  value="B"
-                  onChange={(val) => console.log('Selecionado:', val)}
-                />
-              </div>
+            <Card>
+              <CardContent className="space-y-8">
+                {/* Normal */}
+                <div>
+                  <h3 className="text-lg text-foreground mb-4">Estado Normal (Selecionável)</h3>
+                  <RadioGroup
+                    options={[
+                      { value: 'A', label: 'Esta é a alternativa A - pode ser selecionada' },
+                      { value: 'B', label: 'Esta é a alternativa B - pode ser selecionada' },
+                      { value: 'C', label: 'Esta é a alternativa C - pode ser selecionada' },
+                      { value: 'D', label: 'Esta é a alternativa D - pode ser selecionada' },
+                    ]}
+                    value="B"
+                    onChange={(val) => console.log('Selecionado:', val)}
+                  />
+                </div>
 
-              {/* Com feedback */}
-              <div>
-                <h3 className="text-lg text-gray-300 mb-4">
-                  Com Feedback (Gabarito Exibido)
-                </h3>
-                <RadioGroup
-                  options={[
-                    { value: 'A', label: 'Alternativa incorreta não selecionada' },
-                    { value: 'B', label: 'Alternativa incorreta selecionada (erro do usuário)' },
-                    { value: 'C', label: 'Alternativa correta (gabarito oficial)' },
-                    { value: 'D', label: 'Alternativa não selecionada' },
-                  ]}
-                  value="B"
-                  onChange={(val) => console.log('Selecionado:', val)}
-                  disabled={true}
-                  correctValue="C"
-                />
-              </div>
-            </div>
+                {/* Com feedback */}
+                <div>
+                  <h3 className="text-lg text-foreground mb-4">
+                    Com Feedback (Gabarito Exibido)
+                  </h3>
+                  <RadioGroup
+                    options={[
+                      { value: 'A', label: 'Alternativa incorreta não selecionada' },
+                      { value: 'B', label: 'Alternativa incorreta selecionada (erro do usuário)' },
+                      { value: 'C', label: 'Alternativa correta (gabarito oficial)' },
+                      { value: 'D', label: 'Alternativa não selecionada' },
+                    ]}
+                    value="B"
+                    onChange={(val) => console.log('Selecionado:', val)}
+                    disabled={true}
+                    correctValue="C"
+                  />
+                </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Seção 4: QuestionCard */}
           <section>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">4. QuestionCard 🎴</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-bold text-foreground mb-2">4. QuestionCard 🎴</h2>
+              <p className="text-muted-foreground">
                 Card completo de questão com alternativas, gabarito e explicações.
               </p>
             </div>
@@ -299,7 +304,7 @@ export default function ComponentesPage() {
             <div className="space-y-6">
               {/* Sem gabarito */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Estado: Respondendo</h3>
+                <h3 className="text-lg text-foreground mb-4">Estado: Respondendo</h3>
                 <QuestionCard
                   questao={questaoExemplo}
                   index={0}
@@ -311,7 +316,7 @@ export default function ComponentesPage() {
 
               {/* Com gabarito correto */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Estado: Acertou</h3>
+                <h3 className="text-lg text-foreground mb-4">Estado: Acertou</h3>
                 <QuestionCard
                   questao={questaoExemplo}
                   index={0}
@@ -324,7 +329,7 @@ export default function ComponentesPage() {
 
               {/* Com gabarito incorreto */}
               <div>
-                <h3 className="text-lg text-gray-300 mb-4">Estado: Errou</h3>
+                <h3 className="text-lg text-foreground mb-4">Estado: Errou</h3>
                 <QuestionCard
                   questao={questaoExemplo}
                   index={0}
@@ -340,8 +345,8 @@ export default function ComponentesPage() {
           {/* Seção 5: QuestionsTable */}
           <section>
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">5. QuestionsTable 📋</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-bold text-foreground mb-2">5. QuestionsTable 📋</h2>
+              <p className="text-muted-foreground">
                 Tabela de histórico de questões com status e métricas.
               </p>
             </div>
@@ -353,14 +358,16 @@ export default function ComponentesPage() {
           </section>
 
           {/* Footer */}
-          <div className="text-center py-8 border-t border-gray-800">
-            <p className="text-gray-400 mb-2">
-              ✨ Todos os componentes implementados e funcionando!
-            </p>
-            <p className="text-sm text-gray-600">
-              Desenvolvido para Castro - Plataforma de Preparação para OAB
-            </p>
-          </div>
+          <Card className="mt-8">
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground mb-2">
+                ✨ Todos os componentes implementados e funcionando!
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Desenvolvido para Atlas - Plataforma de Preparação para OAB
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

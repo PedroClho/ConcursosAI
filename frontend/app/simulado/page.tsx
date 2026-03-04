@@ -5,6 +5,9 @@ import axios from 'axios';
 import { Filter, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 import Header from '@/components/Header';
 import QuestionCard from '@/components/QuestionCard';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -119,12 +122,11 @@ export default function SimuladoPage() {
     setLoadingExplicacao({ ...loadingExplicacao, [questao.id]: true });
 
     try {
-      // Formatar a mensagem para o agente
       const alternativasTexto = questao.alternativas
         .map((alt) => `${alt.letra}) ${alt.texto}`)
         .join('\n');
 
-      const mensagem = `Explique a questão ${questao.id} do ${questao.exame}:
+      const mensagem = `Atlas, explique a questão ${questao.id} do ${questao.exame}:
 
 ENUNCIADO:
 ${questao.enunciado}
@@ -161,120 +163,127 @@ Por favor, explique por que a alternativa ${questao.gabarito} é a correta, cita
         subtitle="Pratique com questões reais"
       />
 
-      <div className="flex-1 overflow-y-auto bg-gray-950">
+      <div className="flex-1 overflow-y-auto bg-background">
         <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Botão Novo Simulado */}
         {questoes.length > 0 && (
           <div className="mb-6 flex justify-end">
-            <button
+            <Button
               onClick={reiniciar}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-white"
+              variant="outline"
+              className="gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               Novo Simulado
-            </button>
+            </Button>
           </div>
         )}
 
         {/* Filtros */}
         {questoes.length === 0 && (
-          <div className="bg-gray-900 rounded-lg p-6 mb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Filter className="w-5 h-5 text-green-500" />
-              <h2 className="text-xl" style={{ fontWeight: 400, letterSpacing: '-0.02em' }}>Configurar Simulado</h2>
-            </div>
+          <Card className="mb-6">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Filter className="w-5 h-5 text-primary" />
+                <CardTitle>Configurar Simulado</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {/* Matéria */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-2">Matéria *</label>
+                  <select
+                    value={materiaSelecionada}
+                    onChange={(e) => setMateriaSelecionada(e.target.value)}
+                    className="w-full bg-background border border-input rounded-lg px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                    disabled={loadingMaterias}
+                  >
+                    <option value="">Selecione...</option>
+                    {materias.map((m) => (
+                      <option key={m.nome} value={m.nome}>
+                        {m.nome} ({m.total})
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              {/* Matéria */}
-              <div>
-                <label className="block text-sm text-gray-400 mb-2">Matéria *</label>
-                <select
-                  value={materiaSelecionada}
-                  onChange={(e) => setMateriaSelecionada(e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500"
-                  disabled={loadingMaterias}
-                >
-                  <option value="">Selecione...</option>
-                  {materias.map((m) => (
-                    <option key={m.nome} value={m.nome}>
-                      {m.nome} ({m.total})
-                    </option>
-                  ))}
-                </select>
+                {/* Ano */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-2">Ano (opcional)</label>
+                  <select
+                    value={anoSelecionado || ''}
+                    onChange={(e) => setAnoSelecionado(e.target.value ? parseInt(e.target.value) : null)}
+                    className="w-full bg-background border border-input rounded-lg px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    <option value="">Todos</option>
+                    {Array.from({ length: 9 }, (_, i) => 2010 + i).map((ano) => (
+                      <option key={ano} value={ano}>
+                        {ano}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Quantidade */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-2">Quantidade</label>
+                  <select
+                    value={quantidade}
+                    onChange={(e) => setQuantidade(parseInt(e.target.value))}
+                    className="w-full bg-background border border-input rounded-lg px-4 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  >
+                    <option value={5}>5 questões</option>
+                    <option value={10}>10 questões</option>
+                    <option value={20}>20 questões</option>
+                    <option value={30}>30 questões</option>
+                  </select>
+                </div>
               </div>
 
-              {/* Ano */}
-              <div>
-                <label className="block text-sm text-gray-400 mb-2">Ano (opcional)</label>
-                <select
-                  value={anoSelecionado || ''}
-                  onChange={(e) => setAnoSelecionado(e.target.value ? parseInt(e.target.value) : null)}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500"
-                >
-                  <option value="">Todos</option>
-                  {Array.from({ length: 9 }, (_, i) => 2010 + i).map((ano) => (
-                    <option key={ano} value={ano}>
-                      {ano}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Quantidade */}
-              <div>
-                <label className="block text-sm text-gray-400 mb-2">Quantidade</label>
-                <select
-                  value={quantidade}
-                  onChange={(e) => setQuantidade(parseInt(e.target.value))}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-green-500"
-                >
-                  <option value={5}>5 questões</option>
-                  <option value={10}>10 questões</option>
-                  <option value={20}>20 questões</option>
-                  <option value={30}>30 questões</option>
-                </select>
-              </div>
-            </div>
-
-            <button
-              onClick={buscarQuestoes}
-              disabled={loading || !materiaSelecionada}
-              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white py-3 rounded-lg font-semibold transition"
-            >
-              {loading ? 'Carregando...' : 'Iniciar Simulado'}
-            </button>
-          </div>
+              <Button
+                onClick={buscarQuestoes}
+                disabled={loading || !materiaSelecionada}
+                className="w-full"
+                size="lg"
+              >
+                {loading ? 'Carregando...' : 'Iniciar Simulado'}
+              </Button>
+            </CardContent>
+          </Card>
         )}
 
         {/* Questões */}
         {questoes.length > 0 && (
           <>
             {/* Info do simulado */}
-            <div className="bg-gray-900 rounded-lg p-4 mb-6 flex items-center justify-between">
-              <div>
-                <p className="text-gray-400">
-                  <span className="font-semibold text-white">{materiaSelecionada}</span>
-                  {anoSelecionado && ` • Ano ${anoSelecionado}`}
-                </p>
-                <p className="text-sm text-gray-500">{questoes.length} questões</p>
-              </div>
-
-              {mostrarGabarito && (
-                <div className="flex gap-6 text-sm">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span>Acertos: {resultado.acertos}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <XCircle className="w-5 h-5 text-red-500" />
-                    <span>Erros: {resultado.erros}</span>
-                  </div>
-                  <div className="font-semibold text-green-400">
-                    {resultado.percentual}%
-                  </div>
+            <Card className="mb-6">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-muted-foreground">
+                    <span className="font-semibold text-foreground">{materiaSelecionada}</span>
+                    {anoSelecionado && ` • Ano ${anoSelecionado}`}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{questoes.length} questões</p>
                 </div>
-              )}
-            </div>
+
+                {mostrarGabarito && (
+                  <div className="flex gap-6 text-sm">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      <span>Acertos: {resultado.acertos}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+                      <span>Erros: {resultado.erros}</span>
+                    </div>
+                    <div className="font-semibold text-primary">
+                      {resultado.percentual}%
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
             {/* Lista de questões */}
             <div className="space-y-6">
@@ -296,13 +305,14 @@ Por favor, explique por que a alternativa ${questao.gabarito} é a correta, cita
             {/* Botão de finalizar/ver gabarito */}
             {!mostrarGabarito && (
               <div className="mt-8 flex justify-center">
-                <button
+                <Button
                   onClick={() => setMostrarGabarito(true)}
                   disabled={Object.keys(respostas).length === 0}
-                  className="bg-green-600 hover:bg-green-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-semibold transition"
+                  size="lg"
+                  className="px-8"
                 >
                   Ver Gabarito
-                </button>
+                </Button>
               </div>
             )}
           </>

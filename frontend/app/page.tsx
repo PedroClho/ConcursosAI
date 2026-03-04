@@ -14,15 +14,17 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      <Header 
-        onReset={handleReset}
-        title="Chat Tutor"
-        subtitle="Converse com seu assistente inteligente para OAB"
-      />
-      <main className="flex-1 overflow-hidden">
-        <ChatInterface key={resetTrigger} />
-      </main>
-    </div>
+    <>
+      <div className="flex flex-col h-screen">
+        <Header 
+          onReset={handleReset}
+          title="Chat Atlas"
+          subtitle="Converse com seu assistente inteligente para OAB"
+        />
+        <main className="flex-1 overflow-hidden bg-background">
+          <ChatInterface key={resetTrigger} />
+        </main>
+      </div>
+    </>
   )
 }

@@ -1,5 +1,5 @@
 /**
- * API Client para comunicação com o backend Castro
+ * API Client para comunicação com o backend Atlas
  */
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
@@ -17,7 +17,7 @@ interface ChatResponse {
 }
 
 /**
- * Envia uma mensagem para o tutor OAB
+ * Envia uma mensagem para o Atlas
  */
 export async function sendMessage(
   message: string,
