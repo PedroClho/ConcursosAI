@@ -2,7 +2,18 @@
  * API Client para comunicação com o backend Atlas
  */
 
+import { createClient } from '@/lib/supabase/client'
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
+async function getAuthHeaders() {
+  const supabase = createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+  return {
+    'Content-Type': 'application/json',
+    ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
+  }
+}
 
 interface Message {
   role: 'user' | 'assistant'
@@ -25,9 +36,7 @@ export async function sendMessage(
 ): Promise<ChatResponse> {
   const response = await fetch(`${API_BASE_URL}/api/oab/chat`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: await getAuthHeaders(),
     body: JSON.stringify({
       message,
       conversation_history: conversationHistory.map(msg => ({
@@ -60,9 +69,7 @@ export async function searchDocuments(
 ): Promise<any[]> {
   const response = await fetch(`${API_BASE_URL}/api/oab/search`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: await getAuthHeaders(),
     body: JSON.stringify({
       query,
       ...options
@@ -85,7 +92,9 @@ export async function getStats(): Promise<{
   available_laws: string[]
   collection_name: string
 }> {
-  const response = await fetch(`${API_BASE_URL}/api/oab/stats`)
+  const response = await fetch(`${API_BASE_URL}/api/oab/stats`, {
+    headers: await getAuthHeaders()
+  })
 
   if (!response.ok) {
     throw new Error(`Erro ao obter estatísticas: ${response.status}`)
@@ -98,7 +107,9 @@ export async function getStats(): Promise<{
  * Lista matérias disponíveis no banco de questões
  */
 export async function getMaterias(): Promise<{ nome: string; total: number }[]> {
-  const response = await fetch(`${API_BASE_URL}/api/questoes/materias`)
+  const response = await fetch(`${API_BASE_URL}/api/questoes/materias`, {
+    headers: await getAuthHeaders()
+  })
 
   if (!response.ok) {
     throw new Error(`Erro ao listar matérias: ${response.status}`)
@@ -125,9 +136,7 @@ export async function filtrarQuestoes(filtros: {
 }> {
   const response = await fetch(`${API_BASE_URL}/api/questoes/filtrar`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: await getAuthHeaders(),
     body: JSON.stringify(filtros),
   })
 
@@ -142,7 +151,9 @@ export async function filtrarQuestoes(filtros: {
  * Obtém uma questão aleatória de uma matéria
  */
 export async function getQuestaoAleatoria(materia: string): Promise<any> {
-  const response = await fetch(`${API_BASE_URL}/api/questoes/random/${encodeURIComponent(materia)}`)
+  const response = await fetch(`${API_BASE_URL}/api/questoes/random/${encodeURIComponent(materia)}`, {
+    headers: await getAuthHeaders()
+  })
 
   if (!response.ok) {
     throw new Error(`Erro ao buscar questão: ${response.status}`)

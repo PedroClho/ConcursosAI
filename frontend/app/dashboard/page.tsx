@@ -12,6 +12,8 @@ import {
   Brain,
   Flame,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import StatsCard from '@/components/StatsCard';
 import ProgressBar from '@/components/ProgressBar';
 import QuestionsTable from '@/components/QuestionsTable';
@@ -19,23 +21,52 @@ import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function DashboardPage() {
-  // Dados mockados para demonstração - em produção viriam da API
-  const stats = {
-    questoesRespondidas: 156,
-    taxaAcerto: 72.5,
-    horasEstudo: 18,
-    sequenciaAtual: 5,
-    melhorSequencia: 12,
-    simuladosFeitos: 8,
-  };
+  const [stats, setStats] = useState({
+    questoesRespondidas: 0,
+    acertosTotais: 0,
+    taxaAcerto: 0,
+    horasEstudo: 0,
+    sequenciaAtual: 0,
+    melhorSequencia: 0,
+    simuladosFeitos: 0,
+  });
 
-  const materias = [
-    { nome: 'Direito Constitucional', acertos: 85, total: 120, cor: 'green' as const },
-    { nome: 'Direito Administrativo', acertos: 65, total: 90, cor: 'blue' as const },
-    { nome: 'Direito Civil', acertos: 50, total: 100, cor: 'purple' as const },
-    { nome: 'Direito Penal', acertos: 70, total: 95, cor: 'orange' as const },
-    { nome: 'Direito Processual Civil', acertos: 40, total: 80, cor: 'yellow' as const },
-  ];
+  const [materias, setMaterias] = useState<{ nome: string, acertos: number, total: number, cor: 'green' | 'blue' | 'purple' | 'orange' | 'yellow' }[]>([
+    { nome: 'Direito Constitucional', acertos: 0, total: 0, cor: 'green' },
+    { nome: 'Direito Administrativo', acertos: 0, total: 0, cor: 'blue' },
+  ]);
+
+  useEffect(() => {
+    async function loadStats() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: userStats } = await supabase.from('user_statistics').select('*').eq('user_id', user.id).single();
+      if (userStats) {
+        setStats({
+          questoesRespondidas: userStats.questoes_respondidas || 0,
+          acertosTotais: userStats.acertos || 0,
+          taxaAcerto: userStats.questoes_respondidas > 0 ? Math.round((userStats.acertos / userStats.questoes_respondidas) * 100) : 0,
+          horasEstudo: userStats.horas_estudo || 0,
+          sequenciaAtual: userStats.sequencia_atual || 0,
+          melhorSequencia: userStats.melhor_sequencia || 0,
+          simuladosFeitos: userStats.simulados_feitos || 0,
+        });
+      }
+
+      const { data: userSubjects } = await supabase.from('user_subject_statistics').select('*').eq('user_id', user.id);
+      if (userSubjects && userSubjects.length > 0) {
+        const colors = ['green', 'blue', 'purple', 'orange', 'yellow'] as const;
+        setMaterias(userSubjects.map((s: any, i: number) => ({
+          nome: s.subject_name,
+          acertos: s.acertos,
+          total: s.questoes_respondidas,
+          cor: colors[i % colors.length]
+        })));
+      }
+    }
+    loadStats();
+  }, []);
 
   const questoesRecentes = [
     {
@@ -142,15 +173,15 @@ export default function DashboardPage() {
             />
             <StatsCard
               title="Acertos Totais"
-              value={113}
-              subtitle="de 156 questões"
+              value={stats.acertosTotais}
+              subtitle={`de ${stats.questoesRespondidas} questões`}
               icon={CheckCircle}
               color="green"
               size="sm"
             />
             <StatsCard
               title="Erros Totais"
-              value={43}
+              value={stats.questoesRespondidas - stats.acertosTotais}
               subtitle="áreas para revisar"
               icon={XCircle}
               color="red"

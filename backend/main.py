@@ -3,10 +3,11 @@ API Backend para Plataforma Castro - Tutores para Concursos
 FastAPI + LangGraph + Supabase
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Any
 import sys
 import os
 from datetime import datetime
@@ -213,6 +214,29 @@ else:
 # pm_agent = PMTutorAgent(...)
 
 # =====================================================================
+# AUTENTICAÇÃO
+# =====================================================================
+
+security = HTTPBearer()
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> Any:
+    """Verifica e retorna o usuário logado via Supabase JWT"""
+    token = credentials.credentials
+    try:
+        # A forma recomendada de validar no Supabase Python Client
+        # é instanciar um client temporário só com a anon_key e o token
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_SERVICE_KEY") # ou ANON_KEY
+        temp_client = create_client(supabase_url, supabase_key)
+        
+        user_resp = temp_client.auth.get_user(token)
+        if not user_resp or not user_resp.user:
+            raise HTTPException(status_code=401, detail="Token inválido ou expirado")
+        return user_resp.user
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Não autorizado: {str(e)}")
+
+# =====================================================================
 # ENDPOINTS
 # =====================================================================
 
@@ -240,7 +264,7 @@ async def health():
 
 
 @app.post("/api/oab/chat", response_model=ChatResponse)
-async def oab_chat(request: ChatRequest):
+async def oab_chat(request: ChatRequest, user = Depends(get_current_user)):
     """
     Chat com o Tutor OAB.
     
@@ -276,7 +300,7 @@ async def oab_chat(request: ChatRequest):
 
 
 @app.post("/api/oab/search", response_model=List[SearchResult])
-async def oab_search(request: SearchRequest):
+async def oab_search(request: SearchRequest, user = Depends(get_current_user)):
     """
     Busca direta em documentos OAB (sem chat).
     
@@ -318,7 +342,7 @@ async def oab_search(request: SearchRequest):
 
 
 @app.get("/api/oab/stats", response_model=StatsResponse)
-async def oab_stats():
+async def oab_stats(user = Depends(get_current_user)):
     """
     Retorna estatísticas da base de dados OAB.
     

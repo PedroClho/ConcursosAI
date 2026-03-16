@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import ChatInterface from '@/components/ChatInterface'
 import Header from '@/components/Header'
 
@@ -16,13 +16,15 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-col h-screen">
-        <Header 
+        <Header
           onReset={handleReset}
           title="Chat Atlas"
           subtitle="Converse com seu assistente inteligente para OAB"
         />
         <main className="flex-1 overflow-hidden bg-background">
-          <ChatInterface key={resetTrigger} />
+          <Suspense fallback={<div className="flex-1 flex w-full h-full items-center justify-center">Carregando Chat...</div>}>
+            <ChatInterface key={resetTrigger} />
+          </Suspense>
         </main>
       </div>
     </>

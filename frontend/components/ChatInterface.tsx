@@ -4,8 +4,10 @@ import { useState, useRef, useEffect } from 'react'
 import { Send, Loader2, GraduationCap } from 'lucide-react'
 import MessageBubble from './MessageBubble'
 import { sendMessage } from '@/lib/api'
+import { getChatMessages, saveMessage, createNewChat } from '@/lib/chat'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -21,12 +23,27 @@ const SUGESTOES = [
 ]
 
 export default function ChatInterface() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const chatId = searchParams.get('chat_id')
+
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (chatId) {
+      setLoading(true)
+      getChatMessages(chatId)
+        .then(setMessages)
+        .finally(() => setLoading(false))
+    } else {
+      setMessages([])
+    }
+  }, [chatId])
 
   // Auto-scroll para última mensagem
   useEffect(() => {
@@ -41,9 +58,26 @@ export default function ChatInterface() {
   const handleSend = async () => {
     if (!input.trim() || loading) return
 
+    let activeChatId = chatId
+    // Criar um novo chat se for a primeira mensagem e não estiver num chat existente
+    if (!activeChatId) {
+      setLoading(true)
+      try {
+        const title = input.length > 30 ? input.substring(0, 30) + '...' : input
+        const newChat = await createNewChat(title)
+        activeChatId = newChat.id
+        router.push(`/?chat_id=${activeChatId}`)
+      } catch (err: any) {
+        setLoading(false)
+        setError(err.message || 'Erro ao criar chat. Você já possui 3 chats abertos? Apague algum no menu lateral.')
+        return
+      }
+    }
+
+    const currentInput = input
     const userMessage: Message = {
       role: 'user',
-      content: input,
+      content: currentInput,
       timestamp: new Date()
     }
 
@@ -53,8 +87,12 @@ export default function ChatInterface() {
     setError(null)
 
     try {
-      const response = await sendMessage(input, messages)
-      
+      const validChatId = activeChatId as string
+      // Salva a mensagem do usuário no supabase
+      await saveMessage(validChatId, 'user', currentInput)
+
+      const response = await sendMessage(currentInput, messages)
+
       const assistantMessage: Message = {
         role: 'assistant',
         content: response.response,
@@ -62,6 +100,8 @@ export default function ChatInterface() {
       }
 
       setMessages(prev => [...prev, assistantMessage])
+      // Salva a resposta no db
+      await saveMessage(validChatId, 'assistant', response.response)
     } catch (err: any) {
       setError(err.message || 'Erro ao enviar mensagem')
       console.error('Erro:', err)
@@ -96,10 +136,10 @@ export default function ChatInterface() {
               Olá! Sou o Atlas, seu Tutor OAB
             </h2>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Estou aqui para te ajudar com dúvidas sobre leis, editais e 
+              Estou aqui para te ajudar com dúvidas sobre leis, editais e
               preparação para o Exame de Ordem.
             </p>
-            
+
             <div className="w-full max-w-2xl">
               <p className="text-sm text-muted-foreground mb-3">Sugestões de perguntas:</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
